@@ -5,15 +5,21 @@ const CategoryCardContainer = styled.div`
   min-width: 180px;
   min-height: 120px;
   padding: 16px;
-  background-color: ${props => props.color || '#282828'};
+  /* --- افکت شیشه‌ای --- */
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* --- پایان افکت --- */
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    background-color: ${props => props.color ? `${props.color}dd` : '#383838'};
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
   }
 
   img {
@@ -38,7 +44,7 @@ const CategoryCardContainer = styled.div`
 
 function CategoryCard({ name, color, image }) {
   return (
-    <CategoryCardContainer color={color}>
+    <CategoryCardContainer>
       <img src={image} alt={name} />
       <h4>{name}</h4>
     </CategoryCardContainer>

@@ -3,16 +3,22 @@ import styled from 'styled-components';
 import { FiTrash2 } from 'react-icons/fi'; // آیکون سطل زباله
 
 const LibraryItemContainer = styled.div`
-  display: flex;
+   display: flex;
   align-items: center;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   position: relative;
+  /* --- افکت شیشه‌ای --- */
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* --- پایان افکت */
 
   &:hover {
-    background-color: #282828;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   img {
@@ -21,7 +27,7 @@ const LibraryItemContainer = styled.div`
     margin-right: 16px;
     background-color: #282828;
   }
-
+  
   .item-info {
     color: #b3b3b3;
     

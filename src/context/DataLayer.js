@@ -17,7 +17,6 @@ export const initialState = {
   playerCollapsed: false,
 };
 
-
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
@@ -47,7 +46,6 @@ export const reducer = (state, action) => {
       return { ...state, createPlaylistModalOpen: false };
     case 'CREATE_PLAYLIST':
       return { ...state, playlists: [...state.playlists, { ...action.playlist, songs: [] }] };
-    // اکشن‌های جدید برای افزودن آهنگ به پلی‌لیست
     case 'OPEN_SELECT_PLAYLIST_MODAL':
       return { ...state, selectPlaylistModalOpen: true, songToAdd: action.song };
     case 'CLOSE_SELECT_PLAYLIST_MODAL':
@@ -62,15 +60,16 @@ export const reducer = (state, action) => {
             : playlist
         ),
       };
-    // اکشن جدید برای حذف پلی‌لیست
     case 'DELETE_PLAYLIST':
       return {
         ...state,
         playlists: state.playlists.filter(playlist => playlist.id !== action.playlistId)
       };
-    // اکشن جدید برای تغییر وضعیت سایدبار
     case 'TOGGLE_SIDEBAR':
       return { ...state, sidebarCollapsed: !state.sidebarCollapsed };
+    // اکشن جدید برای تغییر وضعیت پلیر
+    case 'TOGGLE_PLAYER_COLLAPSE':
+      return { ...state, playerCollapsed: !state.playerCollapsed };
     default:
       return state;
   }

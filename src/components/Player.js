@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FiSkipBack, FiSkipForward, FiPlay, FiPause } from 'react-icons/fi';
+import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 
 const PlayerContainer = styled.div`
@@ -8,25 +8,78 @@ const PlayerContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 90px;
+  /* ارتفاع کوچک‌تر */
+  height: 70px;
   background-color: #181818;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   border-top: 1px solid #282828;
+  /* افکت شیشه‌ای */
+  background-color: rgba(24, 24, 24, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* انیمیشن برای جمع شدن */
+  transform: translateY(${props => props.collapsed ? '100%' : '0'});
+  transition: transform 0.3s ease-in-out;
+  z-index: 999;
   
-  .player-left, .player-right { flex: 0.3; }
-  .player-center { flex: 0.4; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  .player-controls { display: flex; align-items: center; gap: 16px; color: #b3b3b3; }
-  .player-controls .play-pause-button { background-color: white; color: black; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .player-left .song-info { display: flex; align-items: center; }
-  .player-left .song-info img { height: 56px; width: 56px; margin-right: 12px; }
-  .player-left .song-info .info-text h4 { font-size: 14px; margin: 0; }
-  .player-left .song-info .info-text p { font-size: 12px; color: #b3b3b3; margin: 0; }
+  .player-left, .player-right { 
+    flex: 0.3; 
+  }
+  
+  .player-center { 
+    flex: 0.4; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 4px; /* فاصله کمتر */
+  }
+
+  .player-controls { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+    color: #b3b3b3; 
+  }
+  
+  .player-controls .play-pause-button { 
+    background-color: white; 
+    color: black; 
+    width: 32px; /* کمی کوچک‌تر */
+    height: 32px; /* کمی کوچک‌تر */
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+  }
+
+  .player-left .song-info { 
+    display: flex; 
+    align-items: center; 
+  }
+  
+  .player-left .song-info img { 
+    height: 50px; /* کمی کوچک‌تر */
+    width: 50px; /* کمی کوچک‌تر */
+    margin-right: 12px; 
+  }
+  
+  .player-left .song-info .info-text h4 { 
+    font-size: 13px; /* کمی کوچک‌تر */
+    margin: 0; 
+  }
+  
+  .player-left .song-info .info-text p { 
+    font-size: 11px; /* کمی کوچک‌تر */
+    color: #b3b3b3; 
+    margin: 0; 
+  }
 `;
 
-// استایل‌های جدید برای نوار پیشرفت
 const PlayerProgress = styled.div`
   display: flex;
   align-items: center;
@@ -34,33 +87,56 @@ const PlayerProgress = styled.div`
   width: 100%;
   max-width: 600px;
 
-  span {
-    color: #b3b3b3;
-    font-size: 12px;
-    min-width: 40px;
+  span { 
+    color: #b3b3b3; 
+    font-size: 11px; /* کمی کوچک‌تر */
+    min-width: 40px; 
   }
-
+  
   .progress-bar {
-    flex-grow: 1;
-    height: 4px;
-    background-color: #535353;
-    border-radius: 2px;
-    position: relative;
+    flex-grow: 1; 
+    height: 3px; /* نازک‌تر */
+    background-color: #535353; 
+    border-radius: 2px; 
+    position: relative; 
     cursor: pointer;
-
-    .progress {
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      background-color: #b3b3b3;
-      border-radius: 2px;
-      transition: width 0.1s linear;
+    
+    .progress { 
+      position: absolute; 
+      left: 0; 
+      top: 0; 
+      height: 100%; 
+      background-color: #b3b3b3; 
+      border-radius: 2px; 
+      transition: width 0.1s linear; 
     }
   }
 `;
 
-// تابع کمکی برای فرمت کردن زمان
+// دکمه جمع و باز کردن پلیر
+const CollapseButton = styled.div`
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #282828;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #b3b3b3;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #383838;
+    color: white;
+  }
+`;
+
 const formatTime = (seconds) => {
   if (isNaN(seconds)) return "0:00";
   const minutes = Math.floor(seconds / 60);
@@ -69,13 +145,13 @@ const formatTime = (seconds) => {
 };
 
 function Player() {
-  const [{ item, playing, audioSrc, currentTime, duration }, dispatch] = useDataLayerValue();
+  const [{ item, playing, audioSrc, currentTime, duration, playerCollapsed }, dispatch] = useDataLayerValue();
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
       if (playing) {
-        audioRef.current.play();
+        audioRef.current.play().catch(error => console.error("Playback failed:", error));
       } else {
         audioRef.current.pause();
       }
@@ -83,29 +159,24 @@ function Player() {
   }, [playing]);
 
   useEffect(() => {
-    if (audioSrc && audioRef.current) {
-      audioRef.current.src = audioSrc;
-      if (playing) {
-        audioRef.current.play();
-      }
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.src = audioSrc;
+      audio.load();
     }
   }, [audioSrc]);
 
-  // useEffect برای به‌روزرسانی زمان فعلی و مدت کل
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
     const setAudioData = () => {
       dispatch({ type: 'SET_DURATION', duration: audio.duration });
       dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime });
     };
-
     const setAudioTime = () => dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime });
-
     audio.addEventListener('loadeddata', setAudioData);
     audio.addEventListener('timeupdate', setAudioTime);
-
     return () => {
       audio.removeEventListener('loadeddata', setAudioData);
       audio.removeEventListener('timeupdate', setAudioTime);
@@ -126,8 +197,11 @@ function Player() {
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <PlayerContainer>
+    <PlayerContainer collapsed={playerCollapsed}>
       <audio ref={audioRef} src={audioSrc} />
+      <CollapseButton onClick={() => dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' })}>
+        {playerCollapsed ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+      </CollapseButton>
       <div className="player-left">
         {item ? (
           <div className="song-info">
@@ -143,19 +217,18 @@ function Player() {
       </div>
       <div className="player-center">
         <div className="player-controls">
-          <FiSkipBack size={20} />
+          <FiSkipBack size={18} />
           <div className="play-pause-button" onClick={handlePlayPause}>
-            {playing ? <FiPause size={18} /> : <FiPlay size={18} style={{ marginLeft: '2px' }}/>}
+            {playing ? <FiPause size={16} /> : <FiPlay size={16} style={{ marginLeft: '2px' }}/>}
           </div>
-          <FiSkipForward size={20} />
+          <FiSkipForward size={18} />
         </div>
-        {/* نوار پیشرفت جدید */}
         <PlayerProgress>
           <span>{formatTime(currentTime)}</span>
           <div className="progress-bar" onClick={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               const percent = ((e.clientX - rect.left) / rect.width) * 100;
-              handleSeek({ target: { value: percent } });
+              handleSeek({ target: { value: percent }});
           }}>
             <div className="progress" style={{ width: `${progressPercentage}%` }}></div>
           </div>
