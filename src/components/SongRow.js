@@ -5,17 +5,25 @@ import { useDataLayerValue } from '../context/DataLayer';
 import SongOptions from './SongOptions';
 
 const SongRowContainer = styled.div`
-  margin-right: 20px;
-  padding: 16px; /* به اندازه اصلی برگشت */
-  width: 180px; /* به اندازه اصلی برگشت */
-  background-color: #181818;
+   margin-right: 20px;
+  padding: 16px;
+  width: 180px;
+  /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
+  background-color: rgba(255, 255, 255, 0.05); /* پس‌زمینه سفید نیمه‌شفاف */
+  backdrop-filter: blur(10px); /* افکت محو شدن */
+  -webkit-backdrop-filter: blur(10px); /* برای مرورگر سافاری */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* حاشیه برای جداسازی */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* سایه برای عمق */
+  /* --- پایان تغییرات --- */
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
 
   &:hover {
-    background-color: #282828;
+    background-color: rgba(255, 255, 255, 0.1); /* در هاور کمی شفاف‌تر شود */
+    transform: translateY(-2px); /* کمی به بالا بیاید */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
 
   &:hover .play-button {
@@ -26,12 +34,12 @@ const SongRowContainer = styled.div`
   img {
     width: 100%;
     border-radius: 4px;
-    margin-bottom: 12px; /* به اندازه اصلی برگشت */
+    margin-bottom: 12px;
   }
 
   .song-info {
     h4 {
-      font-size: 14px; /* به اندازه اصلی برگشت */
+      font-size: 14px;
       font-weight: 600;
       margin-bottom: 4px;
       white-space: nowrap;
@@ -39,7 +47,7 @@ const SongRowContainer = styled.div`
       text-overflow: ellipsis;
     }
     p {
-      font-size: 12px; /* به اندازه اصلی برگشت */
+      font-size: 12px;
       color: #b3b3b3;
       white-space: nowrap;
       overflow: hidden;
@@ -49,10 +57,10 @@ const SongRowContainer = styled.div`
 
   .play-button {
     position: absolute;
-    bottom: 90px; /* به اندازه اصلی برگشت */
+    bottom: 90px;
     right: 16px;
-    width: 48px; /* به اندازه اصلی برگشت */
-    height: 48px; /* به اندازه اصلی برگشت */
+    width: 48px;
+    height: 48px;
     background-color: #1db954;
     border-radius: 50%;
     display: flex;
@@ -64,7 +72,7 @@ const SongRowContainer = styled.div`
     transition: all 0.3s ease;
     
     span {
-      font-size: 20px; /* به اندازه اصلی برگشت */
+      font-size: 20px;
       color: black;
       margin-left: 2px;
     }

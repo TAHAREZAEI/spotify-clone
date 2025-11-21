@@ -3,18 +3,22 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const NavbarContainer = styled.div`
-  position: fixed;
+ position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
+  height: 56px;
+  /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
+  background-color: rgba(0, 0, 0, 0.5); /* پس‌زمینه مشکی نیمه‌شفاف */
+  backdrop-filter: blur(15px); /* افکت محو شدن قوی‌تر */
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* --- پایان تغییرات --- */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 32px;
-  z-index: 999; /* بالاتر از سایدبار */
+  z-index: 1000;
 `;
 
 const NavbarLeft = styled.div`
@@ -30,10 +34,10 @@ const NavbarLogo = styled(Link)`
   margin-right: 24px;
 `;
 
-const NavbarRight = styled.div`
+const NavbarItems = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
 `;
 
 const NavbarLink = styled.a`
@@ -46,6 +50,12 @@ const NavbarLink = styled.a`
   &:hover {
     color: white;
   }
+`;
+
+const NavbarRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
 `;
 
 const NavbarButton = styled(NavbarLink)`
@@ -65,9 +75,10 @@ function TopNavbar() {
     <NavbarContainer>
       <NavbarLeft>
         <NavbarLogo to="/">Spotify</NavbarLogo>
-        <NavbarLink href="#">Premium</NavbarLink>
-        <NavbarLink href="#">Support</NavbarLink>
-        <NavbarLink href="#">Download</NavbarLink>
+        <NavbarItems>
+          <NavbarLink href="#">Premium</NavbarLink>
+          <NavbarLink href="#">Download</NavbarLink>
+        </NavbarItems>
       </NavbarLeft>
       <NavbarRight>
         <NavbarLink href="#">Sign up</NavbarLink>

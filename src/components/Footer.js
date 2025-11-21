@@ -3,17 +3,20 @@ import styled from 'styled-components';
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const FooterContainer = styled.div`
-  background-color: #282828;
-  padding: 80px 32px 32px;
+  /* تغییرات کلیدی برای افکت شیشه‌ای */
+  background-color: rgba(40, 40, 40, 0.7); /* کمی شفاف */
+  backdrop-filter: blur(10px); /* افکت مات */
+  -webkit-backdrop-filter: blur(10px); /* برای سافاری */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 32px 32px;
   color: #b3b3b3;
-  font-size: 16px;
-  padding-bottom: 100px; /* فضای خالی برای پلیر */
+  font-size: 13px;
 `;
 
 const FooterGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 40px;
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 `;
@@ -21,12 +24,12 @@ const FooterGrid = styled.div`
 const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 `;
 
 const FooterTitle = styled.h4`
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -35,7 +38,7 @@ const FooterTitle = styled.h4`
 const FooterLink = styled.a`
   color: #b3b3b3;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
   transition: color 0.2s;
 
@@ -48,7 +51,7 @@ const FooterBottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #404040;
   max-width: 1200px;
@@ -60,7 +63,7 @@ const FooterBottom = styled.div`
 const SocialIcons = styled.div`
   display: flex;
   gap: 16px;
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const SocialIcon = styled.a`
@@ -88,7 +91,7 @@ function Footer() {
           <FooterTitle>Company</FooterTitle>
           <FooterLink href="#">About</FooterLink>
           <FooterLink href="#">Jobs</FooterLink>
-          <FooterLink href="#">For the Record</FooterLink>
+          <FooterLink href="#">For The Record</FooterLink>
         </FooterColumn>
         <FooterColumn>
           <FooterTitle>Communities</FooterTitle>
