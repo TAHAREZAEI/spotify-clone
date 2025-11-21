@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FiPlus, FiSearch } from 'react-icons/fi';
 import LibraryItem from '../components/LibraryItem';
-import { useDataLayerValue } from '../context/DataLayer'; // <-- این خط مهم است
+import { useDataLayerValue } from '../context/DataLayer';
 
 // داده‌های ساختگی podcasts و artists را نگه دارید
 const podcastsData = [
@@ -22,8 +22,6 @@ const LibraryContainer = styled.div`
   overflow-y: auto;
   height: calc(100vh - 90px);
 `;
-
-// ... بقیه استایل‌ها بدون تغییر ...
 
 const LibraryHeader = styled.div`
   display: flex;
@@ -90,14 +88,29 @@ const ContentArea = styled.div`
 `;
 
 function Library() {
-  const [{ playlists }] = useDataLayerValue(); // <-- playlists را از state بگیرید
+  // dispatch را هم از state بگیرید تا بتوانید اکشن بفرستید
+  const [{ playlists }, dispatch] = useDataLayerValue();
   const [activeTab, setActiveTab] = useState('Playlists');
+
+  // تابع جدید برای حذف پلی‌لیست
+  const handleDeletePlaylist = (playlistId) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this playlist?");
+    if (isConfirmed) {
+      dispatch({ type: 'DELETE_PLAYLIST', playlistId });
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'Playlists':
-        // حالا از playlists واقعی استفاده می‌کنید
-        return playlists.map(item => <LibraryItem key={item.id} {...item} />);
+        // تابع حذف را به عنوان prop به LibraryItem پاس دهید
+        return playlists.map(item => (
+          <LibraryItem 
+            key={item.id} 
+            {...item} 
+            onDelete={() => handleDeletePlaylist(item.id)} 
+          />
+        ));
       case 'Podcasts':
         return podcastsData.map(item => <LibraryItem key={item.id} {...item} />);
       case 'Artists':

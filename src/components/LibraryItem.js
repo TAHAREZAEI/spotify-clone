@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FiTrash2 } from 'react-icons/fi'; // آیکون سطل زباله
 
 const LibraryItemContainer = styled.div`
   display: flex;
@@ -8,6 +9,7 @@ const LibraryItemContainer = styled.div`
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  position: relative;
 
   &:hover {
     background-color: #282828;
@@ -36,15 +38,42 @@ const LibraryItemContainer = styled.div`
   }
 `;
 
-function LibraryItem({ image, name, type }) {
+// استایل برای دکمه حذف
+const DeleteButton = styled.div`
+  position: absolute;
+  right: 16px;
+  color: #b3b3b3;
+  cursor: pointer;
+  opacity: 0; // به طور پیش‌فرض مخفی است
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    color: #fff;
+  }
+`;
+
+// با هاور روی آیتم، دکمه حذف نمایش داده می‌شود
+const LibraryItemContainerWithHover = styled(LibraryItemContainer)`
+  &:hover ${DeleteButton} {
+    opacity: 1;
+  }
+`;
+
+function LibraryItem({ image, name, type, onDelete }) {
   return (
-    <LibraryItemContainer>
+    <LibraryItemContainerWithHover>
       <img src={image} alt={name} />
       <div className="item-info">
         <p className="item-name">{name}</p>
         <p className="item-type">{type}</p>
       </div>
-    </LibraryItemContainer>
+      {/* فقط اگر نوع پلی‌لیست بود و تابع حذف وجود داشت، دکمه را نمایش بده */}
+      {type === 'Playlist' && onDelete && (
+        <DeleteButton onClick={(e) => { e.stopPropagation(); onDelete(); }}>
+          <FiTrash2 size={18} />
+        </DeleteButton>
+      )}
+    </LibraryItemContainerWithHover>
   );
 }
 

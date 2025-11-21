@@ -59,6 +59,12 @@ export const reducer = (state, action) => {
             : playlist
         ),
       };
+    // اکشن جدید برای حذف پلی‌لیست
+    case 'DELETE_PLAYLIST':
+      return {
+        ...state,
+        playlists: state.playlists.filter(playlist => playlist.id !== action.playlistId)
+      };
     default:
       return state;
   }

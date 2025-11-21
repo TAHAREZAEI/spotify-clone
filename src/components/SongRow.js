@@ -6,8 +6,8 @@ import SongOptions from './SongOptions'; // import کامپوننت منو
 
 const SongRowContainer = styled.div`
   margin-right: 20px;
-  padding: 16px;
-  width: 180px;
+  padding: 12px; <!-- از 16px به 12px تغییر دهید -->
+  width: 160px; <!-- از 180px به 160px تغییر دهید -->
   background-color: #181818;
   border-radius: 8px;
   cursor: pointer;
@@ -26,12 +26,12 @@ const SongRowContainer = styled.div`
   img {
     width: 100%;
     border-radius: 4px;
-    margin-bottom: 12px;
+    margin-bottom: 8px; <!-- از 12px به 8px تغییر دهید -->
   }
 
   .song-info {
     h4 {
-      font-size: 14px;
+      font-size: 13px; <!-- از 14px به 13px تغییر دهید -->
       font-weight: 600;
       margin-bottom: 4px;
       white-space: nowrap;
@@ -39,7 +39,7 @@ const SongRowContainer = styled.div`
       text-overflow: ellipsis;
     }
     p {
-      font-size: 12px;
+      font-size: 11px; <!-- از 12px به 11px تغییر دهید -->
       color: #b3b3b3;
       white-space: nowrap;
       overflow: hidden;
@@ -49,10 +49,10 @@ const SongRowContainer = styled.div`
 
   .play-button {
     position: absolute;
-    bottom: 90px;
+    bottom: 80px; <!-- از 90px به 80px تغییر دهید -->
     right: 16px;
-    width: 48px;
-    height: 48px;
+    width: 40px; <!-- از 48px به 40px تغییر دهید -->
+    height: 40px; <!-- از 48px به 40px تغییر دهید -->
     background-color: #1db954;
     border-radius: 50%;
     display: flex;
@@ -64,18 +64,19 @@ const SongRowContainer = styled.div`
     transition: all 0.3s ease;
     
     span {
-      font-size: 20px;
+      font-size: 18px; <!-- از 20px به 18px تغییر دهید -->
       color: black;
       margin-left: 2px;
     }
   }
 `;
 
+// ... استایل‌های LikeButton و OptionsButton را هم کمی کوچک کنید
 const LikeButton = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;
-  font-size: 24px;
+  font-size: 20px; <!-- از 24px به 20px تغییر دهید -->
   cursor: pointer;
   opacity: 0.7;
   transition: all 0.2s ease;
@@ -86,12 +87,11 @@ const LikeButton = styled.div`
   }
 `;
 
-// استایل برای دکمه سه نقطه
 const OptionsButton = styled.div`
   position: absolute;
   top: 16px;
   left: 16px;
-  font-size: 24px;
+  font-size: 20px; <!-- از 24px به 20px تغییر دهید -->
   cursor: pointer;
   opacity: 0.7;
   transition: all 0.2s ease;

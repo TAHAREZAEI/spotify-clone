@@ -16,9 +16,10 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   gap: 8px;
 
-  .sidebar-logo {
-    height: 30px;
+ .sidebar-logo {
+    height: 24px; <!-- از 30px به 24px تغییر دهید -->
     margin-bottom: 20px;
+    cursor: pointer; /* اضافه کردن cursor برای قابلیت کلیک */
     filter: invert(1) grayscale(100%);
   }
 
