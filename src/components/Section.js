@@ -15,6 +15,13 @@ const SectionContainer = styled.div`
     display: flex;
     overflow-x: auto;
     padding-bottom: 10px;
+    
+    /* مخفی کردن اسکرول بار */
+    scrollbar-width: none;
+  }
+
+  .section-items::-webkit-scrollbar {
+    display: none;
   }
 `;
 

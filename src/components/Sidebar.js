@@ -1,26 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiSearch, FiBookOpen, FiPlusSquare, FiChevronLeft, FiChevronRight } from 'react-icons/fi'; // آیکون‌های جدید
-import { useDataLayerValue } from '../context/DataLayer'; // import useDataLayerValue
+import { FiHome, FiSearch, FiBookOpen, FiPlusSquare, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useDataLayerValue } from '../context/DataLayer';
 
 import spotifyLogo from '../assets/Spotify_Primary_Logo_RGB_Black.png';
 
-// استایل سایدبار برای حالت باز و بسته
 const SidebarContainer = styled.div`
-flex: 0.2;
-  /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
-  background-color: rgba(0, 0, 0, 0.5); /* پس‌زمینه مشکی نیمه‌شفاف */
-  backdrop-filter: blur(10px); /* افکت محو شدن */
+  flex: 0.2;
+  /* --- افکت شیشه‌ای --- */
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1); /* حاشیه سمت راست */
-  /* --- پایان تغییرات --- */
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  /* --- پایان افکت --- */
   color: #b3b3b3;
   height: 100vh;
-  padding: 24px 12px;
+  padding: ${props => props.collapsed ? '12px 4px' : '24px 12px'};
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: flex 0.3s ease, padding 0.3s ease;
+
+  /* مخفی شدن در موبایل */
+  @media (max-width: 768px) {
+    display: none;
+  }
 
   .sidebar-logo {
     height: 24px;
@@ -44,7 +49,7 @@ flex: 0.2;
 
     &:hover {
       color: white;
-      background-color: rgba(255, 255, 255, 0.05); /* هاور با افکت شیشه‌ای */
+      background-color: rgba(255, 255, 255, 0.05);
     }
   }
 
@@ -60,7 +65,6 @@ flex: 0.2;
   }
 `;
 
-// استایل دکمه تغییر وضعیت
 const ToggleButton = styled.div`
   color: #b3b3b3;
   cursor: pointer;
@@ -88,7 +92,6 @@ function Sidebar() {
       
       <Link to="/" className={`sidebar-option ${location.pathname === '/' ? 'active' : ''}`}>
         <FiHome size={24} />
-        {/* متن فقط در حالت باز نمایش داده می‌شود */}
         {!sidebarCollapsed && <span>Home</span>}
       </Link>
       

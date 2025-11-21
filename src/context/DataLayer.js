@@ -13,8 +13,8 @@ export const initialState = {
   selectPlaylistModalOpen: false,
   songToAdd: null,
   sidebarCollapsed: false,
-  // مقدار جدید برای وضعیت پلیر
   playerCollapsed: false,
+  mobileMenuOpen: false,
 };
 
 export const reducer = (state, action) => {
@@ -67,9 +67,10 @@ export const reducer = (state, action) => {
       };
     case 'TOGGLE_SIDEBAR':
       return { ...state, sidebarCollapsed: !state.sidebarCollapsed };
-    // اکشن جدید برای تغییر وضعیت پلیر
     case 'TOGGLE_PLAYER_COLLAPSE':
       return { ...state, playerCollapsed: !state.playerCollapsed };
+    case 'TOGGLE_MOBILE_MENU':
+      return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
     default:
       return state;
   }
