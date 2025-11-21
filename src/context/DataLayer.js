@@ -6,9 +6,13 @@ export const initialState = {
   playing: false,
   item: null,
   likedSongs: [],
+  // آدرس فایل صوتی آهنگ در حال پخش
+  audioSrc: null,
+  // مقادیر جدید برای نوار پیشرفت
+  currentTime: 0,
+  duration: 0,
 };
 
-// اینجا کلمه export اضافه شد
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
@@ -32,6 +36,14 @@ export const reducer = (state, action) => {
           likedSongs: [...state.likedSongs, action.song],
         };
       }
+    // اکشن جدید برای تنظیم منبع صوتی
+    case 'SET_AUDIO_SRC':
+      return { ...state, audioSrc: action.audioSrc };
+    // اکشن‌های جدید برای نوار پیشرفت
+    case 'SET_CURRENT_TIME':
+      return { ...state, currentTime: action.currentTime };
+    case 'SET_DURATION':
+      return { ...state, duration: action.duration };
     default:
       return state;
   }

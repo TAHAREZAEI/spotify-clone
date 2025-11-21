@@ -85,9 +85,7 @@ const LikeButton = styled.div`
 `;
 
 function SongRow({ track }) {
-  // <-- اینجا تغییر اصلی را اعمال کردیم
-  // در تابع SongRow
-const [{ likedSongs = [] }, dispatch] = useDataLayerValue();
+  const [{ likedSongs = [] }, dispatch] = useDataLayerValue();
 
   const isLiked = likedSongs.some((song) => song.id === track.id);
 
@@ -103,6 +101,11 @@ const [{ likedSongs = [] }, dispatch] = useDataLayerValue();
     dispatch({
       type: 'SET_ITEM',
       item: track,
+    });
+    // این خط جدید اضافه شد تا آدرس فایل صوتی تنظیم شود
+    dispatch({
+      type: 'SET_AUDIO_SRC',
+      audioSrc: track.audioUrl, // آدرس صوتی از آبجکت تراک خوانده می‌شود
     });
     dispatch({
       type: 'SET_PLAYING',

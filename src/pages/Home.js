@@ -2,21 +2,39 @@ import React from 'react';
 import styled from 'styled-components';
 import Section from '../components/Section';
 
-// داده‌های ساختگی با تصاویر واقعی جایگزین شده‌اند
+// ۱. تصاویر خودتان را اینجا import کنید
+import imagesJpg from '../assets/images.jpg';
+import downloadJpg from '../assets/download.jpg';
+import a from '../assets/a.jpg';
+import aa from '../assets/aa.jpg';
+import qq from '../assets/qq.jpg';
+import sa from '../assets/sa.jpg';
+import ss from '../assets/ss.jpg';
+
+// ۲. داده‌های ساختگی
+
 const madeForYouData = [
-  { id: 1, name: 'Chill Lofi Study Beats', artist: 'Lofi Girl', albumArt: 'https://i.scdn.co/image/ab67616d0000b273475e8f5d1b1e0d1f3e8e6b4f6' },
-  { id: 2, name: 'Discover Weekly', artist: 'Your weekly mixtape', albumArt: 'https://i.scdn.co/image/ab67616d0000b2734716a0e0a1e0d1f3e8e6b4f6' },
-  { id: 3, name: 'Daily Mix 2', artist: 'Kendrick Lamar, J. Cole, Drake...', albumArt: 'https://i.scdn.co/image/ab67616d0000b2736a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 4, name: 'Rock Classics', artist: 'Queen, AC/DC, The Eagles...', albumArt: 'https://i.scdn.co/image/ab67616d0000b2738a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 5, name: 'Focus Flow', artist: 'Deep Focus, Study Music', albumArt: 'https://i.scdn.co/image/ab67616d0000b2739a9b8e8e0a1e0d1f3e8e6b4f6' },
+  { 
+    id: 1, 
+    name: 'My Custom Playlist 1', 
+    artist: 'Artist Name', 
+    albumArt: imagesJpg,
+    // فقط این یک آهنگ آدرس صوتی دارد
+    audioUrl: '/audio/OVERTHINK%209_2.mp3' 
+  },
+  { id: 2, name: 'My Custom Playlist 2', artist: 'Another Artist', albumArt: downloadJpg },
+  { id: 3, name: 'My Custom Playlist 3', artist: 'Another Artist', albumArt: a},
+  { id: 4, name: 'My Custom Playlist 4', artist: 'Another Artist', albumArt: aa },
+  { id: 5, name: 'My Custom Playlist 5', artist: 'Another Artist', albumArt: qq },
 ];
 
 const popularArtistsData = [
-  { id: 6, name: 'Taylor Swift', artist: 'Artist', albumArt: 'https://i.scdn.co/image/ab67616d0000b2732a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 7, name: 'The Weeknd', artist: 'Artist', albumArt: 'https://i.scdn.co/image/ab67616d0000b2733a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 8, name: 'Bad Bunny', artist: 'Artist', albumArt: 'https://i.scdn.co/image/ab67616d0000b2730a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 9, name: 'Drake', artist: 'Artist', albumArt: 'https://i.scdn.co/image/ab67616d0000b2731a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 10, name: 'Billie Eilish', artist: 'Artist', albumArt: 'https://i.scdn.co/image/ab67616d0000b2734a9b8e8e0a1e0d1f3e8e6b4f6' },
+  // اینجا اشتباه تایپی داشتید (nname به name تغییر کرد)
+  { id: 6, name: 'My Custom Playlist 6', artist: 'Another Artist', albumArt: sa },
+  { id: 7, name: 'My Custom Playlist 7', artist: 'Another Artist', albumArt: ss },
+  { id: 8, name: 'My Custom Playlist 8', artist: 'Another Artist', albumArt: a  },
+  { id: 9, name: 'My Custom Playlist 9', artist: 'Another Artist', albumArt: downloadJpg },
+  { id: 10, name: 'My Custom Playlist 10', artist: 'Another Artist', albumArt: ss },
 ];
 
 const HomeContainer = styled.div`

@@ -17,11 +17,10 @@ const SidebarContainer = styled.div`
   gap: 8px;
 
   .sidebar-logo {
-    height: 50px;
+    height: 30px; <!-- اینجا را از 50px به 30px تغییر دهید -->
     margin-bottom: 20px;
-    /* ۳. این خط را برای سفید کردن لوگوی مشکی اضافه کنید */
-    filter: invert(1) grayscale(100%);
   }
+
 
   .sidebar-option {
     display: flex;
