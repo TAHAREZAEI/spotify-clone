@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { FiMoreVertical } from 'react-icons/fi'; // آیکون سه نقطه
 import { useDataLayerValue } from '../context/DataLayer';
+import SongOptions from './SongOptions'; // import کامپوننت منو
 
 const SongRowContainer = styled.div`
   margin-right: 20px;
@@ -84,37 +86,72 @@ const LikeButton = styled.div`
   }
 `;
 
+// استایل برای دکمه سه نقطه
+const OptionsButton = styled.div`
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  padding: 4px;
+  border-radius: 50%;
+
+  &:hover {
+    opacity: 1;
+    background-color: rgba(0,0,0,0.5);
+  }
+`;
+
 function SongRow({ track }) {
   const [{ likedSongs = [] }, dispatch] = useDataLayerValue();
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsRef = useRef(null);
 
   const isLiked = likedSongs.some((song) => song.id === track.id);
 
   const handleLike = (e) => {
     e.stopPropagation();
-    dispatch({
-      type: 'TOGGLE_LIKE_SONG',
-      song: track,
-    });
+    dispatch({ type: 'TOGGLE_LIKE_SONG', song: track });
   };
 
   const handlePlaySong = () => {
-    dispatch({
-      type: 'SET_ITEM',
-      item: track,
-    });
-    // این خط جدید اضافه شد تا آدرس فایل صوتی تنظیم شود
-    dispatch({
-      type: 'SET_AUDIO_SRC',
-      audioSrc: track.audioUrl, // آدرس صوتی از آبجکت تراک خوانده می‌شود
-    });
-    dispatch({
-      type: 'SET_PLAYING',
-      playing: true,
-    });
+    dispatch({ type: 'SET_ITEM', item: track });
+    dispatch({ type: 'SET_AUDIO_SRC', audioSrc: track.audioUrl });
+    dispatch({ type: 'SET_PLAYING', playing: true });
   };
+
+  const handleAddToPlaylist = (e) => {
+    e.stopPropagation();
+    dispatch({ type: 'OPEN_SELECT_PLAYLIST_MODAL', song: track });
+    setShowOptions(false);
+  };
+
+  // برای بستن منو با کلیک در بیرون از آن
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    };
+    if (showOptions) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showOptions]);
 
   return (
     <SongRowContainer onClick={handlePlaySong}>
+      <div ref={optionsRef} style={{ position: 'relative' }}>
+        <OptionsButton onClick={(e) => { e.stopPropagation(); setShowOptions(!showOptions); }}>
+          <FiMoreVertical />
+        </OptionsButton>
+        {showOptions && <SongOptions onAddToPlaylist={handleAddToPlaylist} />}
+      </div>
+      
       <LikeButton onClick={handleLike}>
         {isLiked ? '❤️' : '🤍'}
       </LikeButton>

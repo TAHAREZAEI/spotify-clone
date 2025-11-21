@@ -6,7 +6,8 @@ import Search from './pages/Search';
 import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
 import Player from './components/Player';
-import CreatePlaylistModal from './components/CreatePlaylistModal'; // <-- Modal را import کنید
+import CreatePlaylistModal from './components/CreatePlaylistModal';
+import SelectPlaylistModal from './components/SelectPlaylistModal'; // <-- import مودال جدید
 import { GlobalStyle } from './styles/GlobalStyle';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -31,8 +32,8 @@ function App() {
         </AppContainer>
         <Player />
       </Router>
-      {/* Modal را اینجا رندر کنید */}
       <CreatePlaylistModal />
+      <SelectPlaylistModal /> {/* <-- مودال جدید را اینجا رندر کنید */}
     </>
   );
 }
