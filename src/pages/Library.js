@@ -2,14 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FiPlus, FiSearch } from 'react-icons/fi';
 import LibraryItem from '../components/LibraryItem';
+import { useDataLayerValue } from '../context/DataLayer'; // <-- این خط مهم است
 
-// داده‌های ساختگی برای بخش‌های مختلف
-const playlistsData = [
-  { id: 1, name: 'My Playlist #1', type: 'Playlist', image: 'https://i.scdn.co/image/ab67616d0000b2734d1b7055b1c71f9d2a761437' },
-  { id: 2, name: 'Chill Vibes', type: 'Playlist', image: 'https://i.scdn.co/image/ab67616d0000b2734716a0e0a1e0d1f3e8e6b4f6' },
-  { id: 3, name: 'Workout Mix', type: 'Playlist', image: 'https://i.scdn.co/image/ab67616d0000b2736a9b8e8e0a1e0d1f3e8e6b4f6' },
-];
-
+// داده‌های ساختگی podcasts و artists را نگه دارید
 const podcastsData = [
   { id: 4, name: 'The Joe Rogan Experience', type: 'Podcast', image: 'https://i.scdn.co/image/ab67616d0000b2737a9b8e8e0a1e0d1f3e8e6b4f6' },
   { id: 5, name: 'Call Her Daddy', type: 'Podcast', image: 'https://i.scdn.co/image/ab67616d0000b2738a9b8e8e0a1e0d1f3e8e6b4f6' },
@@ -27,6 +22,8 @@ const LibraryContainer = styled.div`
   overflow-y: auto;
   height: calc(100vh - 90px);
 `;
+
+// ... بقیه استایل‌ها بدون تغییر ...
 
 const LibraryHeader = styled.div`
   display: flex;
@@ -93,12 +90,14 @@ const ContentArea = styled.div`
 `;
 
 function Library() {
+  const [{ playlists }] = useDataLayerValue(); // <-- playlists را از state بگیرید
   const [activeTab, setActiveTab] = useState('Playlists');
 
   const renderContent = () => {
     switch (activeTab) {
       case 'Playlists':
-        return playlistsData.map(item => <LibraryItem key={item.id} {...item} />);
+        // حالا از playlists واقعی استفاده می‌کنید
+        return playlists.map(item => <LibraryItem key={item.id} {...item} />);
       case 'Podcasts':
         return podcastsData.map(item => <LibraryItem key={item.id} {...item} />);
       case 'Artists':

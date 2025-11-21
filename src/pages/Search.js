@@ -3,13 +3,22 @@ import styled from 'styled-components';
 import CategoryCard from '../components/CategoryCard';
 import { FiSearch } from 'react-icons/fi';
 
+// ۱. تصاویر خودتان را اینجا import کنید
+import a from '../assets/a.jpg';
+import aa from '../assets/aa.jpg';
+import qq from '../assets/qq.jpg';
+import sa from '../assets/sa.jpg';
+import ss from '../assets/ss.jpg';
+import imagesJpg from '../assets/images.jpg';
+
+// ۲. داده‌ها را با تصاویر خودتان آپدیت کنید
 const categoriesData = [
-  { id: 1, name: 'Pop', color: '#FF6B6B', image: 'https://i.scdn.co/image/ab67616d0000b2735b1c71f9d2a761437' },
-  { id: 2, name: 'Hip-Hop', color: '#4ECDC4', image: 'https://i.scdn.co/image/ab67616d0000b2734716a0e0a1e0d1f3e8e6b4f6' },
-  { id: 3, name: 'Rock', color: '#45B7D1', image: 'https://i.scdn.co/image/ab67616d0000b2736a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 4, name: 'Dance/Electronic', color: '#96CEB4', image: 'https://i.scdn.co/image/ab67616d0000b2737a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 5, name: 'Podcasts', color: '#DDA0DD', image: 'https://i.scdn.co/image/ab67616d0000b2738a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 6, name: 'Mood', color: '#F7DC6F', image: 'https://i.scdn.co/image/ab67616d0000b2739a9b8e8e0a1e0d1f3e8e6b4f6' },
+  { id: 1, name: 'Pop', color: '#FF6B6B', image: a },
+  { id: 2, name: 'Hip-Hop', color: '#4ECDC4', image: aa },
+  { id: 3, name: 'Rock', color: '#45B7D1', image: qq },
+  { id: 4, name: 'Dance/Electronic', color: '#96CEB4', image: sa },
+  { id: 5, name: 'Podcasts', color: '#DDA0DD', image: ss },
+  { id: 6, name: 'Mood', color: '#F7DC6F', image: imagesJpg },
 ];
 
 const SearchContainer = styled.div`

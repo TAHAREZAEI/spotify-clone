@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { FiHome, FiSearch, FiBookOpen, FiPlusSquare } from 'react-icons/fi';
+import { useDataLayerValue } from '../context/DataLayer'; // <-- این خط مهم است
 
-// ۱. عکس خود را اینجا import کنید
 import spotifyLogo from '../assets/Spotify_Primary_Logo_RGB_Black.png';
 
 const SidebarContainer = styled.div`
@@ -17,10 +17,10 @@ const SidebarContainer = styled.div`
   gap: 8px;
 
   .sidebar-logo {
-    height: 30px; <!-- اینجا را از 50px به 30px تغییر دهید -->
+    height: 30px;
     margin-bottom: 20px;
+    filter: invert(1) grayscale(100%);
   }
-
 
   .sidebar-option {
     display: flex;
@@ -54,15 +54,11 @@ const SidebarContainer = styled.div`
 
 function Sidebar() {
   const location = useLocation();
+  const [, dispatch] = useDataLayerValue(); // <-- برای ارسال اکشن
 
   return (
     <SidebarContainer>
-      {/* ۲. به جای URL، از متغیری که import کردید استفاده کنید */}
-      <img
-        className="sidebar-logo"
-        src={spotifyLogo}
-        alt="Spotify Logo"
-      />
+      <img className="sidebar-logo" src={spotifyLogo} alt="Spotify Logo" />
       
       <Link to="/" className={`sidebar-option ${location.pathname === '/' ? 'active' : ''}`}>
         <FiHome size={24} />
@@ -80,7 +76,11 @@ function Sidebar() {
       </Link>
       
       <hr />
-      <div className="sidebar-option">
+      {/* اینجا دکمه را به اکشن متصل می‌کنیم */}
+      <div 
+        className="sidebar-option" 
+        onClick={() => dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' })}
+      >
         <FiPlusSquare size={24} />
         <span>Create Playlist</span>
       </div>

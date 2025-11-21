@@ -2,15 +2,17 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 export const initialState = {
   user: null,
-  playlists: [],
+  playlists: [], // هر پلی‌لیست یک آرایه songs خواهد داشت
   playing: false,
   item: null,
   likedSongs: [],
-  // آدرس فایل صوتی آهنگ در حال پخش
   audioSrc: null,
-  // مقادیر جدید برای نوار پیشرفت
   currentTime: 0,
   duration: 0,
+  createPlaylistModalOpen: false,
+  // مقادیر جدید برای مودال انتخاب پلی‌لیست
+  selectPlaylistModalOpen: false,
+  songToAdd: null,
 };
 
 export const reducer = (state, action) => {
@@ -26,24 +28,37 @@ export const reducer = (state, action) => {
     case 'TOGGLE_LIKE_SONG':
       const isLiked = state.likedSongs.some(song => song.id === action.song.id);
       if (isLiked) {
-        return {
-          ...state,
-          likedSongs: state.likedSongs.filter(song => song.id !== action.song.id),
-        };
+        return { ...state, likedSongs: state.likedSongs.filter(song => song.id !== action.song.id) };
       } else {
-        return {
-          ...state,
-          likedSongs: [...state.likedSongs, action.song],
-        };
+        return { ...state, likedSongs: [...state.likedSongs, action.song] };
       }
-    // اکشن جدید برای تنظیم منبع صوتی
     case 'SET_AUDIO_SRC':
       return { ...state, audioSrc: action.audioSrc };
-    // اکشن‌های جدید برای نوار پیشرفت
     case 'SET_CURRENT_TIME':
       return { ...state, currentTime: action.currentTime };
     case 'SET_DURATION':
       return { ...state, duration: action.duration };
+    case 'OPEN_CREATE_PLAYLIST_MODAL':
+      return { ...state, createPlaylistModalOpen: true };
+    case 'CLOSE_CREATE_PLAYLIST_MODAL':
+      return { ...state, createPlaylistModalOpen: false };
+    case 'CREATE_PLAYLIST':
+      return { ...state, playlists: [...state.playlists, { ...action.playlist, songs: [] }] };
+    // اکشن‌های جدید برای افزودن آهنگ به پلی‌لیست
+    case 'OPEN_SELECT_PLAYLIST_MODAL':
+      return { ...state, selectPlaylistModalOpen: true, songToAdd: action.song };
+    case 'CLOSE_SELECT_PLAYLIST_MODAL':
+      return { ...state, selectPlaylistModalOpen: false, songToAdd: null };
+    case 'ADD_SONG_TO_PLAYLIST':
+      const { playlistId, song } = action;
+      return {
+        ...state,
+        playlists: state.playlists.map(playlist =>
+          playlist.id === playlistId
+            ? { ...playlist, songs: [...playlist.songs, song] }
+            : playlist
+        ),
+      };
     default:
       return state;
   }

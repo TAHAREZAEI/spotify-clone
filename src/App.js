@@ -4,10 +4,10 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Library from './pages/Library';
-import LikedSongs from './pages/LikedSongs'; // مطمئن شو این خط وجود دارد
+import LikedSongs from './pages/LikedSongs';
 import Player from './components/Player';
+import CreatePlaylistModal from './components/CreatePlaylistModal'; // <-- Modal را import کنید
 import { GlobalStyle } from './styles/GlobalStyle';
-// مطمئن شو این سه خط import شده باشند
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
@@ -19,11 +19,9 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      {/* کل اپلیکیشن باید داخل Router باشه */}
       <Router>
         <AppContainer>
           <Sidebar />
-          {/* مسیرها باید داخل Routes تعریف بشن */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
@@ -33,6 +31,8 @@ function App() {
         </AppContainer>
         <Player />
       </Router>
+      {/* Modal را اینجا رندر کنید */}
+      <CreatePlaylistModal />
     </>
   );
 }
