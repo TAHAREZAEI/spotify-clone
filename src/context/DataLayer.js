@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 
 export const initialState = {
   user: null,
-  playlists: [], // هر پلی‌لیست یک آرایه songs خواهد داشت
+  playlists: [],
   playing: false,
   item: null,
   likedSongs: [],
@@ -10,12 +10,13 @@ export const initialState = {
   currentTime: 0,
   duration: 0,
   createPlaylistModalOpen: false,
-  // مقادیر جدید برای مودال انتخاب پلی‌لیست
   selectPlaylistModalOpen: false,
   songToAdd: null,
-  // مقدار جدید برای وضعیت سایدبار
   sidebarCollapsed: false,
+  // مقدار جدید برای وضعیت پلیر
+  playerCollapsed: false,
 };
+
 
 export const reducer = (state, action) => {
   switch (action.type) {
