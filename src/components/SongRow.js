@@ -10,8 +10,8 @@ const SongRowContainer = styled.div`
   width: 180px;
   /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
   background-color: rgba(255, 255, 255, 0.05); /* پس‌زمینه سفید نیمه‌شفاف */
-  backdrop-filter: blur(10px); /* افکت محو شدن */
-  -webkit-backdrop-filter: blur(10px); /* برای مرورگر سافاری */
+  backdrop-filter: blur(10px); /* افکت مات شدن */
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1); /* حاشیه برای جداسازی */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* سایه برای عمق */
   /* --- پایان تغییرات --- */
@@ -21,8 +21,8 @@ const SongRowContainer = styled.div`
   position: relative;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* در هاور کمی شفاف‌تر شود */
-    transform: translateY(-2px); /* کمی به بالا بیاید */
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
 

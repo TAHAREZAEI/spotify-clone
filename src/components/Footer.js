@@ -3,12 +3,19 @@ import styled from 'styled-components';
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const FooterContainer = styled.div`
-  /* تغییرات کلیدی برای افکت شیشه‌ای */
-  background-color: rgba(40, 40, 40, 0.7); /* کمی شفاف */
-  backdrop-filter: blur(10px); /* افکت مات */
-  -webkit-backdrop-filter: blur(10px); /* برای سافاری */
+  /* --- تغییرات کلیدی برای ثابت بودن --- */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998; /* زیر پلیر (999) اما بالاتر از محتوا */
+  /* --- پایان تغییرات --- */
+
+  background-color: rgba(40, 40, 40, 0.7); /* افکت شیشه‌ای */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 20px 32px 32px;
+  padding: 20px 32px; /* کوچک‌تر برای اینکه فضای کمتری بگیرد */
   color: #b3b3b3;
   font-size: 13px;
 `;

@@ -3,23 +3,18 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const NavbarContainer = styled.div`
- position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
-  background-color: rgba(0, 0, 0, 0.5); /* پس‌زمینه مشکی نیمه‌شفاف */
-  backdrop-filter: blur(15px); /* افکت محو شدن قوی‌تر */
+  /* --- تغییرات کلیدی برای ثابت و شیشه‌ای بودن --- *  /* --- تغییرات کلیدی: position حذف شد --- */
+  padding: 16px 32px;
+  background-color: rgba(0, 0, 0, 0.5); /* افکت شیشه‌ای */
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  /* --- پایان تغییرات --- */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 32px;
-  z-index: 1000;
+  /* z-index دیگر نیازی نیست چون ثابت نیست */
 `;
+
 
 const NavbarLeft = styled.div`
   display: flex;

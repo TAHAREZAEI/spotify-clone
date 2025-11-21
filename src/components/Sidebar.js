@@ -8,15 +8,19 @@ import spotifyLogo from '../assets/Spotify_Primary_Logo_RGB_Black.png';
 
 // استایل سایدبار برای حالت باز و بسته
 const SidebarContainer = styled.div`
-  flex: ${props => props.collapsed ? '0.08' : '0.2'};
-  background-color: #000000;
+flex: 0.2;
+  /* --- تغییرات کلیدی برای افکت شیشه‌ای --- */
+  background-color: rgba(0, 0, 0, 0.5); /* پس‌زمینه مشکی نیمه‌شفاف */
+  backdrop-filter: blur(10px); /* افکت محو شدن */
+  -webkit-backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1); /* حاشیه سمت راست */
+  /* --- پایان تغییرات --- */
   color: #b3b3b3;
   height: 100vh;
-  padding: ${props => props.collapsed ? '12px 4px' : '24px 12px'};
+  padding: 24px 12px;
   display: flex;
   flex-direction: column;
-  gap: ${props => props.collapsed ? '8px' : '8px'};
-  transition: flex 0.3s ease, padding 0.3s ease;
+  gap: 8px;
 
   .sidebar-logo {
     height: 24px;
@@ -35,21 +39,22 @@ const SidebarContainer = styled.div`
     color: #b3b3b3;
     cursor: pointer;
     border-radius: 4px;
-    transition: color 0.2s;
+    transition: all 0.2s;
     text-decoration: none;
 
     &:hover {
       color: white;
+      background-color: rgba(255, 255, 255, 0.05); /* هاور با افکت شیشه‌ای */
     }
   }
 
   .sidebar-option.active {
     color: white;
-    background-color: #282828;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   hr {
-    border: 1px solid #282828;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     margin: 10px 0;
     width: 90%;
   }

@@ -15,19 +15,18 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
   display: flex;
-  /* ارتفاع کل صفحه منهای پلیر */
-  height: calc(100vh - 90px);
+  /* این خط بسیار مهم است */
+  margin-top: 56px; /* فضا برای نوار ثابت بالایی */
+  height: calc(100vh - 56px); /* ارتفاع کل صفحه منهای نوار */
 `;
 
-// کانتینری که محتوا و فوتر را در بر می‌گیرد و اسکرول می‌شود
 const MainContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* این بخش اسکرول می‌خورد */
+  overflow-y: auto;
 `;
 
-// یک کانتینر برای صفحات که فضا را پر کند
 const PageWrapper = styled.div`
   flex-grow: 1;
 `;
@@ -37,11 +36,10 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
+        <TopNavbar /> {/* نوار ثابت در بیرون از کانتینر اصلی */}
         <AppContainer>
           <Sidebar />
           <MainContent>
-            {/* نوار بالایی به اینجا منتقل شد */}
-            <TopNavbar />
             <PageWrapper>
               <Routes>
                 <Route path="/" element={<Home />} />
