@@ -15,15 +15,17 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const AppContainer = styled.div`
   display: flex;
-  /* این خط بسیار مهم است */
-  margin-top: 56px; /* فضا برای نوار ثابت بالایی */
-  height: calc(100vh - 56px); /* ارتفاع کل صفحه منهای نوار */
+  height: calc(100vh - 90px);
 `;
 
-const MainContent = styled.div`
+const MainContentWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+`;
+
+const ScrollableArea = styled.div`
+  flex-grow: 1;
   overflow-y: auto;
 `;
 
@@ -36,20 +38,22 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
-        <TopNavbar /> {/* نوار ثابت در بیرون از کانتینر اصلی */}
         <AppContainer>
           <Sidebar />
-          <MainContent>
-            <PageWrapper>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/library" element={<Library />} />
-                <Route path="/liked-songs" element={<LikedSongs />} />
-              </Routes>
-            </PageWrapper>
-            <Footer />
-          </MainContent>
+          <MainContentWrapper>
+            <ScrollableArea>
+              <TopNavbar /> {/* نوار فقط اینجا و یک بار قرار دارد */}
+              <PageWrapper>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/library" element={<Library />} />
+                  <Route path="/liked-songs" element={<LikedSongs />} />
+                </Routes>
+              </PageWrapper>
+              <Footer />
+            </ScrollableArea>
+          </MainContentWrapper>
         </AppContainer>
         <Player />
       </Router>
