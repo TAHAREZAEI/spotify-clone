@@ -13,6 +13,8 @@ export const initialState = {
   // مقادیر جدید برای مودال انتخاب پلی‌لیست
   selectPlaylistModalOpen: false,
   songToAdd: null,
+  // مقدار جدید برای وضعیت سایدبار
+  sidebarCollapsed: false,
 };
 
 export const reducer = (state, action) => {
@@ -65,6 +67,9 @@ export const reducer = (state, action) => {
         ...state,
         playlists: state.playlists.filter(playlist => playlist.id !== action.playlistId)
       };
+    // اکشن جدید برای تغییر وضعیت سایدبار
+    case 'TOGGLE_SIDEBAR':
+      return { ...state, sidebarCollapsed: !state.sidebarCollapsed };
     default:
       return state;
   }

@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FiMoreVertical } from 'react-icons/fi'; // آیکون سه نقطه
+import { FiMoreVertical } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
-import SongOptions from './SongOptions'; // import کامپوننت منو
+import SongOptions from './SongOptions';
 
 const SongRowContainer = styled.div`
   margin-right: 20px;
-  padding: 12px; <!-- از 16px به 12px تغییر دهید -->
-  width: 160px; <!-- از 180px به 160px تغییر دهید -->
+  padding: 16px; /* به اندازه اصلی برگشت */
+  width: 180px; /* به اندازه اصلی برگشت */
   background-color: #181818;
   border-radius: 8px;
   cursor: pointer;
@@ -26,12 +26,12 @@ const SongRowContainer = styled.div`
   img {
     width: 100%;
     border-radius: 4px;
-    margin-bottom: 8px; <!-- از 12px به 8px تغییر دهید -->
+    margin-bottom: 12px; /* به اندازه اصلی برگشت */
   }
 
   .song-info {
     h4 {
-      font-size: 13px; <!-- از 14px به 13px تغییر دهید -->
+      font-size: 14px; /* به اندازه اصلی برگشت */
       font-weight: 600;
       margin-bottom: 4px;
       white-space: nowrap;
@@ -39,7 +39,7 @@ const SongRowContainer = styled.div`
       text-overflow: ellipsis;
     }
     p {
-      font-size: 11px; <!-- از 12px به 11px تغییر دهید -->
+      font-size: 12px; /* به اندازه اصلی برگشت */
       color: #b3b3b3;
       white-space: nowrap;
       overflow: hidden;
@@ -49,10 +49,10 @@ const SongRowContainer = styled.div`
 
   .play-button {
     position: absolute;
-    bottom: 80px; <!-- از 90px به 80px تغییر دهید -->
+    bottom: 90px; /* به اندازه اصلی برگشت */
     right: 16px;
-    width: 40px; <!-- از 48px به 40px تغییر دهید -->
-    height: 40px; <!-- از 48px به 40px تغییر دهید -->
+    width: 48px; /* به اندازه اصلی برگشت */
+    height: 48px; /* به اندازه اصلی برگشت */
     background-color: #1db954;
     border-radius: 50%;
     display: flex;
@@ -64,19 +64,18 @@ const SongRowContainer = styled.div`
     transition: all 0.3s ease;
     
     span {
-      font-size: 18px; <!-- از 20px به 18px تغییر دهید -->
+      font-size: 20px; /* به اندازه اصلی برگشت */
       color: black;
       margin-left: 2px;
     }
   }
 `;
 
-// ... استایل‌های LikeButton و OptionsButton را هم کمی کوچک کنید
 const LikeButton = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;
-  font-size: 20px; <!-- از 24px به 20px تغییر دهید -->
+  font-size: 24px; /* به اندازه اصلی برگشت */
   cursor: pointer;
   opacity: 0.7;
   transition: all 0.2s ease;
@@ -87,11 +86,12 @@ const LikeButton = styled.div`
   }
 `;
 
+// استایل برای دکمه سه نقطه
 const OptionsButton = styled.div`
   position: absolute;
   top: 16px;
   left: 16px;
-  font-size: 20px; <!-- از 24px به 20px تغییر دهید -->
+  font-size: 24px; /* به اندازه اصلی برگشت */
   cursor: pointer;
   opacity: 0.7;
   transition: all 0.2s ease;

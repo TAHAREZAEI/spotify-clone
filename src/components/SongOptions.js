@@ -15,7 +15,7 @@ const OptionsContainer = styled.div`
 const OptionButton = styled.button`
   background: none;
   border: none;
-  color: #b3b3b3;
+  color: white; <!-- از #b3b3b3 به white تغییر دهید -->
   padding: 8px 24px;
   font-size: 14px;
   cursor: pointer;
@@ -24,7 +24,7 @@ const OptionButton = styled.button`
   transition: color 0.2s;
 
   &:hover {
-    color: white;
+    color: #b3b3b3; <!-- هاور را کمی کمرنگ کنید تا تفاوت مشخص باشد -->
   }
 `;
 

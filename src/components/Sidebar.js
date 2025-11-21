@@ -1,25 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiSearch, FiBookOpen, FiPlusSquare } from 'react-icons/fi';
-import { useDataLayerValue } from '../context/DataLayer'; // <-- این خط مهم است
+import { FiHome, FiSearch, FiBookOpen, FiPlusSquare, FiChevronLeft, FiChevronRight } from 'react-icons/fi'; // آیکون‌های جدید
+import { useDataLayerValue } from '../context/DataLayer'; // import useDataLayerValue
 
 import spotifyLogo from '../assets/Spotify_Primary_Logo_RGB_Black.png';
 
+// استایل سایدبار برای حالت باز و بسته
 const SidebarContainer = styled.div`
-  flex: 0.2;
+  flex: ${props => props.collapsed ? '0.08' : '0.2'};
   background-color: #000000;
   color: #b3b3b3;
   height: 100vh;
-  padding: 24px 12px;
+  padding: ${props => props.collapsed ? '12px 4px' : '24px 12px'};
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${props => props.collapsed ? '8px' : '8px'};
+  transition: flex 0.3s ease, padding 0.3s ease;
 
- .sidebar-logo {
-    height: 24px; <!-- از 30px به 24px تغییر دهید -->
+  .sidebar-logo {
+    height: 24px;
     margin-bottom: 20px;
-    cursor: pointer; /* اضافه کردن cursor برای قابلیت کلیک */
+    cursor: pointer;
     filter: invert(1) grayscale(100%);
   }
 
@@ -53,41 +55,56 @@ const SidebarContainer = styled.div`
   }
 `;
 
+// استایل دکمه تغییر وضعیت
+const ToggleButton = styled.div`
+  color: #b3b3b3;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: white;
+  }
+`;
+
 function Sidebar() {
   const location = useLocation();
-  const [, dispatch] = useDataLayerValue(); // <-- برای ارسال اکشن
+  const [{ sidebarCollapsed }, dispatch] = useDataLayerValue();
 
   return (
-    <SidebarContainer>
-      <img className="sidebar-logo" src={spotifyLogo} alt="Spotify Logo" />
+    <SidebarContainer collapsed={sidebarCollapsed}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {!sidebarCollapsed && <img className="sidebar-logo" src={spotifyLogo} alt="Spotify Logo" />}
+        <ToggleButton onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}>
+          {sidebarCollapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
+        </ToggleButton>
+      </div>
       
       <Link to="/" className={`sidebar-option ${location.pathname === '/' ? 'active' : ''}`}>
         <FiHome size={24} />
-        <span>Home</span>
+        {/* متن فقط در حالت باز نمایش داده می‌شود */}
+        {!sidebarCollapsed && <span>Home</span>}
       </Link>
       
       <Link to="/search" className={`sidebar-option ${location.pathname === '/search' ? 'active' : ''}`}>
         <FiSearch size={24} />
-        <span>Search</span>
+        {!sidebarCollapsed && <span>Search</span>}
       </Link>
       
       <Link to="/library" className={`sidebar-option ${location.pathname === '/library' ? 'active' : ''}`}>
         <FiBookOpen size={24} />
-        <span>Your Library</span>
+        {!sidebarCollapsed && <span>Your Library</span>}
       </Link>
       
       <hr />
-      {/* اینجا دکمه را به اکشن متصل می‌کنیم */}
-      <div 
-        className="sidebar-option" 
-        onClick={() => dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' })}
-      >
+      <div className="sidebar-option" onClick={() => dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' })}>
         <FiPlusSquare size={24} />
-        <span>Create Playlist</span>
+        {!sidebarCollapsed && <span>Create Playlist</span>}
       </div>
       <Link to="/liked-songs" className={`sidebar-option ${location.pathname === '/liked-songs' ? 'active' : ''}`}>
         <span style={{ marginRight: '8px' }}>❤️</span>
-        <span>Liked Songs</span>
+        {!sidebarCollapsed && <span>Liked Songs</span>}
       </Link>
     </SidebarContainer>
   );
