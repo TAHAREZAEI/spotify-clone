@@ -12,10 +12,11 @@ import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
 import PlaylistPage from './pages/PlaylistPage';
 import PopPage from './pages/PopPage';
-import HipHopPage from './pages/HipHopPage'; // <-- وارد کردن صفحات جدید
+import HipHopPage from './pages/HipHopPage';
 import DanceElectronicPage from './pages/DanceElectronicPage';
 import PodcastsPage from './pages/PodcastsPage';
 import MoodPage from './pages/MoodPage';
+import RockPage from './pages/RockPage'; // <-- 1. صفحه‌ی جدید را وارد کنید
 
 // کامپوننت‌های اصلی
 import Sidebar from './components/Sidebar';
@@ -85,6 +86,7 @@ function App() {
                   <Route path="/search/dance-electronic" element={<DanceElectronicPage />} />
                   <Route path="/search/podcasts" element={<PodcastsPage />} />
                   <Route path="/search/mood" element={<MoodPage />} />
+                  <Route path="/search/rock" element={<RockPage />} /> {/* <-- 2. مسیر جدید را اضافه کنید */}
                   <Route path="/library" element={<Library />} />
                   <Route path="/liked-songs" element={<LikedSongs />} />
                   <Route path="/playlist/:id" element={<PlaylistPage />} />

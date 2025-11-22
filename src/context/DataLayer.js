@@ -17,7 +17,8 @@ export const initialState = {
   sidebarCollapsed: false,
   playerCollapsed: false,
   mobileMenuOpen: false,
-  nowPlayingViewOpen: false, // <-- State جدید اضافه شد
+  nowPlayingViewOpen: false,
+  isMuted: false, // <-- State جدید برای وضعیت بی‌صدا
 };
 
 export const reducer = (state, action) => {
@@ -74,8 +75,10 @@ export const reducer = (state, action) => {
       return { ...state, playerCollapsed: !state.playerCollapsed };
     case 'TOGGLE_MOBILE_MENU':
       return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
-    case 'TOGGLE_NOW_PLAYING_VIEW': // <-- Case جدید اضافه شد
+    case 'TOGGLE_NOW_PLAYING_VIEW':
       return { ...state, nowPlayingViewOpen: !state.nowPlayingViewOpen };
+    case 'TOGGLE_MUTE': // <-- Case جدید برای تغییر وضعیت بی‌صدا
+      return { ...state, isMuted: !state.isMuted };
     default:
       return state;
   }

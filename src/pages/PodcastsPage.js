@@ -3,10 +3,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Section from '../components/Section';
-
+import a from '../assets/a.jpg';
+import sa from "../assets/sa.jpg";
 const podcastsData = [
-  { id: 1, name: 'The Daily Podcast', artist: 'The Daily', albumArt: 'https://i.scdn.co/image/ab67616d0000b2737a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 2, name: 'Tech Talks', artist: 'TechNews', albumArt: 'https://i.scdn.co/image/ab67616d0000b2738a9b8e8e0a1e0d1f3e8e6b4f6' },
+  { id: 1, name: 'The Daily Podcast', artist: 'The Daily', albumArt: a,audioUrl: '/audio/Hiphopologist - Darya .mp3' },
+  { id: 2, name: 'Tech Talks', artist: 'TechNews', albumArt: sa,  audioUrl: '/audio/Hiphopologist - Ex.mp3' },
 ];
 
 const PodcastsContainer = styled.main`
