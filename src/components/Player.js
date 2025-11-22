@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp, FiVolume2, FiVolumeX } from 'react-icons/fi'; // <-- 1. آیکون‌های صدا را وارد کنید
 import { useDataLayerValue } from '../context/DataLayer';
 
 // ... (کدهای styled-components شما بدون تغییر باقی می‌مانند)
@@ -24,7 +24,7 @@ const PlayerContainer = styled.footer`
   transform: translateY(${props => props.collapsed ? '100%' : '0'});
   transition: transform 0.28s ease-in-out;
   z-index: 2000;
-  cursor: pointer; /* <-- اضافه شد تا نشان دهد قابل کلیک است */
+  cursor: pointer;
 
   .player-left, .player-right { 
     flex: 0 0 26%;
@@ -147,6 +147,17 @@ const CollapseButton = styled.button`
   &:hover { color: #fff; transform: translateX(-50%) scale(1.03); }
 `;
 
+// 2. یک styled-component برای دکمه‌ی صدا اضافه کنید
+const VolumeButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+  &:hover { color: #fff; }
+`;
+
 const formatTime = (seconds) => {
   if (isNaN(seconds)) return "0:00";
   const minutes = Math.floor(seconds / 60);
@@ -155,10 +166,10 @@ const formatTime = (seconds) => {
 };
 
 function Player() {
-  const [{ item, playing, audioSrc, currentTime, duration, playerCollapsed }, dispatch] = useDataLayerValue();
+  // 3. state های isMuted و nowPlayingViewOpen را بگیرید
+  const [{ item, playing, audioSrc, currentTime, duration, playerCollapsed, isMuted, nowPlayingViewOpen }, dispatch] = useDataLayerValue();
   const audioRef = useRef(null);
 
-  // ... (بقیه useEffect ها بدون تغییر باقی می‌مانند)
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -204,6 +215,13 @@ function Player() {
     };
   }, [audioSrc, dispatch]);
 
+  // 4. useEffect جدید برای کنترل وضعیت muted در عنصر audio
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
   const handlePlayPause = () => dispatch({ type: 'SET_PLAYING', playing: !playing });
 
   const handleSeek = (e) => {
@@ -215,9 +233,14 @@ function Player() {
     dispatch({ type: 'SET_CURRENT_TIME', currentTime: seekTime });
   };
 
-  // تابع جدید برای باز کردن نمای تمام‌صفحه
+  // 5. تابع جدید برای باز کردن نمای تمام‌صفحه
   const handleOpenNowPlaying = () => {
     dispatch({ type: 'TOGGLE_NOW_PLAYING_VIEW' });
+  };
+
+  // 6. تابع جدید برای تغییر وضعیت بی‌صدا
+  const handleMuteToggle = () => {
+    dispatch({ type: 'TOGGLE_MUTE' });
   };
 
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
@@ -227,14 +250,14 @@ function Player() {
       collapsed={playerCollapsed} 
       role="region" 
       aria-label="player"
-      onClick={handleOpenNowPlaying} // <-- 1. رویداد کلیک را اضافه کنید
+      onClick={handleOpenNowPlaying}
     >
       <audio ref={audioRef} />
       <CollapseButton
         aria-pressed={!!playerCollapsed}
         aria-label={playerCollapsed ? 'باز کردن پلیر' : 'بستن پلیر'}
         onClick={(e) => {
-            e.stopPropagation(); // جلوگیری از باز شدن صفحه با کلیک روی این دکمه
+            e.stopPropagation();
             dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' });
         }}
       >
@@ -274,7 +297,10 @@ function Player() {
       </div>
 
       <div className="player-right">
-        <span style={{ color: '#b3b3b3' }}>🔊</span>
+        {/* 7. دکمه‌ی اسپیکر را با آیکون و رویداد مناسب جایگزین کنید */}
+        <VolumeButton onClick={(e) => { e.stopPropagation(); handleMuteToggle(); }} aria-label="mute/unmute">
+          {isMuted ? <FiVolumeX size={20} /> : <FiVolume2 size={20} />}
+        </VolumeButton>
       </div>
     </PlayerContainer>
   );

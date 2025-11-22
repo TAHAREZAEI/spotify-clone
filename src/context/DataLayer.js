@@ -18,14 +18,14 @@ export const initialState = {
   playerCollapsed: false,
   mobileMenuOpen: false,
   nowPlayingViewOpen: false,
-  isMuted: false, // <-- State جدید برای وضعیت بی‌صدا
+  isMuted: false, // State جدید برای وضعیت بی‌صدا
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
       return { ...state, user: action.user };
-    case 'SET_PLAYING':
+    case 'SET_PLAYING': // <-- این خط باید اصلاح شود
       return { ...state, playing: action.playing };
     case 'SET_ITEM':
       return { ...state, item: action.item };
@@ -75,9 +75,9 @@ export const reducer = (state, action) => {
       return { ...state, playerCollapsed: !state.playerCollapsed };
     case 'TOGGLE_MOBILE_MENU':
       return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
-    case 'TOGGLE_NOW_PLAYING_VIEW':
+    case 'TOGGLE_NOW_PLAYING_VIEW': // اینجا هم یک اشتباه تایپی دیگر بود
       return { ...state, nowPlayingViewOpen: !state.nowPlayingViewOpen };
-    case 'TOGGLE_MUTE': // <-- Case جدید برای تغییر وضعیت بی‌صدا
+    case 'TOGGLE_MUTE': // Case جدید برای تغییر وضعیت بی‌صدا
       return { ...state, isMuted: !state.isMuted };
     default:
       return state;
