@@ -1,3 +1,5 @@
+// src/context/DataLayer.js
+
 import React, { createContext, useContext, useReducer } from 'react';
 
 export const initialState = {
@@ -15,6 +17,7 @@ export const initialState = {
   sidebarCollapsed: false,
   playerCollapsed: false,
   mobileMenuOpen: false,
+  nowPlayingViewOpen: false, // <-- State جدید اضافه شد
 };
 
 export const reducer = (state, action) => {
@@ -71,6 +74,8 @@ export const reducer = (state, action) => {
       return { ...state, playerCollapsed: !state.playerCollapsed };
     case 'TOGGLE_MOBILE_MENU':
       return { ...state, mobileMenuOpen: !state.mobileMenuOpen };
+    case 'TOGGLE_NOW_PLAYING_VIEW': // <-- Case جدید اضافه شد
+      return { ...state, nowPlayingViewOpen: !state.nowPlayingViewOpen };
     default:
       return state;
   }

@@ -10,7 +10,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
-import PlaylistPage from './pages/PlaylistPage'; // <-- 1. کامپوننت جدید را وارد کنید
+import PlaylistPage from './pages/PlaylistPage';
 
 // کامپوننت‌های اصلی
 import Sidebar from './components/Sidebar';
@@ -21,6 +21,7 @@ import TopNavbar from './components/TopNavbar';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import MobileMenu from './components/MobileMenu';
+import NowPlayingView from './components/NowPlayingView'; // <-- 1. کامپوننت جدید را وارد کنید
 import { GlobalStyle } from './styles/GlobalStyle';
 
 const AppContainer = styled.div`
@@ -55,7 +56,7 @@ const PageWrapper = styled.div`
 `;
 
 function App() {
-  const [{ mobileMenuOpen }, dispatch] = useDataLayerValue();
+  const [{ mobileMenuOpen, nowPlayingViewOpen }, dispatch] = useDataLayerValue(); // <-- 2. nowPlayingViewOpen را از state بگیرید
 
   return (
     <>
@@ -74,7 +75,6 @@ function App() {
                   <Route path="/search" element={<Search />} />
                   <Route path="/library" element={<Library />} />
                   <Route path="/liked-songs" element={<LikedSongs />} />
-                  {/* 2. مسیر داینامیک جدید برای صفحه پلی‌لیست */}
                   <Route path="/playlist/:id" element={<PlaylistPage />} />
                 </Routes>
               </PageWrapper>
@@ -93,6 +93,9 @@ function App() {
           <SelectPlaylistModal />
         </div>
       </Router>
+
+      {/* 3. کامپوننت تمام‌صفحه را اینجا اضافه کنید */}
+      {nowPlayingViewOpen && <NowPlayingView />}
     </>
   );
 }
