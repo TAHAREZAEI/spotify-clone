@@ -4,17 +4,25 @@ import { FiPlus, FiSearch } from 'react-icons/fi';
 import LibraryItem from '../components/LibraryItem';
 import { useDataLayerValue } from '../context/DataLayer';
 
-// داده‌های ساختگی podcasts و artists را نگه دارید
+// ===== شروع تغییرات: وارد کردن (import) عکس‌های خودتان از پوشه assets =====
+import aaImg from '../assets/aa.jpg';
+import qqImg from '../assets/qq.jpg';
+import ssImg from '../assets/ss.jpg';
+import saImg from '../assets/sa.jpg';
+// ===== پایان تغییرات =====
+
+// داده‌های ساختگی podcasts و artists را با عکس‌های وارد شده آپدیت کنید
 const podcastsData = [
-  { id: 4, name: 'The Joe Rogan Experience', type: 'Podcast', image: 'https://i.scdn.co/image/ab67616d0000b2737a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 5, name: 'Call Her Daddy', type: 'Podcast', image: 'https://i.scdn.co/image/ab67616d0000b2738a9b8e8e0a1e0d1f3e8e6b4f6' },
+  { id: 4, name: 'The Joe Rogan Experience', type: 'Podcast', image: aaImg },
+  { id: 5, name: 'Call Her Daddy', type: 'Podcast', image: qqImg },
 ];
 
 const artistsData = [
-  { id: 6, name: 'Taylor Swift', type: 'Artist', image: 'https://i.scdn.co/image/ab67616d0000b2732a9b8e8e0a1e0d1f3e8e6b4f6' },
-  { id: 7, name: 'The Weeknd', type: 'Artist', image: 'https://i.scdn.co/image/ab67616d0000b2733a9b8e8e0a1e0d1f3e8e6b4f6' },
+  { id: 6, name: 'Taylor Swift', type: 'Artist', image: ssImg },
+  { id: 7, name: 'The Weeknd', type: 'Artist', image: saImg },
 ];
 
+// بقیه‌ی کد شما بدون تغییر باقی می‌ماند
 const LibraryContainer = styled.div`
   flex-grow: 1;
   background-color: #121212;
@@ -88,11 +96,9 @@ const ContentArea = styled.div`
 `;
 
 function Library() {
-  // dispatch را هم از state بگیرید تا بتوانید اکشن بفرستید
   const [{ playlists }, dispatch] = useDataLayerValue();
   const [activeTab, setActiveTab] = useState('Playlists');
 
-  // تابع جدید برای حذف پلی‌لیست
   const handleDeletePlaylist = (playlistId) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this playlist?");
     if (isConfirmed) {
@@ -103,7 +109,6 @@ function Library() {
   const renderContent = () => {
     switch (activeTab) {
       case 'Playlists':
-        // تابع حذف را به عنوان prop به LibraryItem پاس دهید
         return playlists.map(item => (
           <LibraryItem 
             key={item.id} 
