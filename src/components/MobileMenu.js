@@ -1,9 +1,7 @@
-// src/components/MobileMenu.js
-
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FiHome, FiSearch, FiBookOpen, FiPlusSquare } from 'react-icons/fi';
+import { FiHome, FiSearch, FiBookOpen, FiX } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 
 const MenuOverlay = styled.div`
@@ -12,12 +10,10 @@ const MenuOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 3000;
-  display: flex;
-  /* منو را بر اساس prop باز یا بسته می‌کنیم */
-  transform: translateX(${props => props.isOpen ? '0' : '-100%'});
-  transition: transform 0.3s ease-in-out;
+  display: ${props => props.isOpen ? 'flex' : 'none'};
+  justify-content: flex-start;
 `;
 
 const MenuContainer = styled.nav`
@@ -28,12 +24,52 @@ const MenuContainer = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  transform: translateX(${props => props.isOpen ? '0' : '-100%'});
+  transition: transform 0.3s ease-in-out;
+  overflow-y: auto;
+  
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+  }
+
+  @media (max-width: 360px) {
+    padding: 16px;
+    gap: 20px;
+  }
 `;
 
-const MenuHeader = styled.h2`
+const MenuHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const MenuTitle = styled.h2`
   color: white;
   font-size: 24px;
   font-weight: 700;
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const MenuOption = styled(Link)`
@@ -44,32 +80,58 @@ const MenuOption = styled(Link)`
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
-  padding: 10px 0;
+  padding: 12px 0;
   border-radius: 4px;
-  transition: color 0.2s;
+  transition: color 0.2s, background-color 0.2s;
 
   &:hover {
     color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+    padding: 10px 0;
+    gap: 14px;
   }
 `;
 
-const CloseButton = styled.button`
-  align-self: flex-end;
-  background: transparent;
+const Divider = styled.hr`
   border: none;
-  color: #b3b3b3;
-  font-size: 24px;
-  cursor: pointer;
+  border-top: 1px solid #282828;
+  width: 100%;
+  margin: 8px 0;
+`;
+
+const PlaylistSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #404040;
+    border-radius: 3px;
+  }
 `;
 
 function MobileMenu({ isOpen, onClose }) {
   const [{ playlists }] = useDataLayerValue();
 
   return (
-    <MenuOverlay isOpen={isOpen}>
-      <MenuContainer>
-        <CloseButton onClick={onClose}>&times;</CloseButton>
-        <MenuHeader>Menu</MenuHeader>
+    <MenuOverlay isOpen={isOpen} onClick={onClose}>
+      <MenuContainer isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
+        <MenuHeader>
+          <MenuTitle>Menu</MenuTitle>
+          <CloseButton onClick={onClose}>
+            <FiX size={20} />
+          </CloseButton>
+        </MenuHeader>
         
         <MenuOption to="/" onClick={onClose}>
           <FiHome size={20} />
@@ -84,19 +146,22 @@ function MobileMenu({ isOpen, onClose }) {
           Your Library
         </MenuOption>
         
-        <hr style={{ border: '1px solid #282828', width: '100%' }} />
+        <Divider />
 
         <MenuOption to="/liked-songs" onClick={onClose}>
           <span style={{ marginRight: '8px' }}>❤️</span>
           Liked Songs
         </MenuOption>
 
-        {playlists.map(playlist => (
-          <MenuOption key={playlist.id} to={`/playlist/${playlist.id}`} onClick={onClose}>
-            {playlist.name}
-          </MenuOption>
-        ))}
+        <Divider />
 
+        <PlaylistSection>
+          {playlists.map(playlist => (
+            <MenuOption key={playlist.id} to={`/playlist/${playlist.id}`} onClick={onClose}>
+              {playlist.name}
+            </MenuOption>
+          ))}
+        </PlaylistSection>
       </MenuContainer>
     </MenuOverlay>
   );

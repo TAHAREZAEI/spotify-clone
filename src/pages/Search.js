@@ -1,8 +1,6 @@
-// src/pages/Search.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'; // <-- 1. Link را وارد کنید
+import { Link } from 'react-router-dom';
 import CategoryCard from '../components/CategoryCard';
 import { FiSearch } from 'react-icons/fi';
 
@@ -14,7 +12,6 @@ import sa from '../assets/sa.jpg';
 import ss from '../assets/ss.jpg';
 import imagesJpg from '../assets/images.jpg';
 
-// ۲. یک "slug" (آدرس) به هر دسته اضافه کنید
 const categoriesData = [
   { id: 1, name: 'Pop', color: '#FF6B6B', image: a, slug: 'pop' },
   { id: 2, name: 'Hip-Hop', color: '#4ECDC4', image: aa, slug: 'hip-hop' },
@@ -30,6 +27,20 @@ const SearchContainer = styled.div`
   padding: 24px;
   overflow-y: auto;
   height: calc(100vh - 90px);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    height: calc(100vh - 84px);
+  }
+
+  @media (max-width: 640px) {
+    padding: 12px;
+    height: calc(100vh - 74px);
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+  }
 `;
 
 const SearchBarContainer = styled.div`
@@ -41,6 +52,15 @@ const SearchBarContainer = styled.div`
   max-width: 400px;
   margin: 20px 0;
   
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 16px 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 4px 16px;
+  }
+  
   input {
     background: none;
     border: none;
@@ -49,6 +69,11 @@ const SearchBarContainer = styled.div`
     width: 100%;
     outline: none;
     margin-left: 12px;
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+      margin-left: 8px;
+    }
 
     &::placeholder {
       color: #b3b3b3;
@@ -61,6 +86,28 @@ const CategoriesGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 24px;
   margin-top: 40px;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 24px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -68,9 +115,18 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
 `;
 
-// ۳. کارت را با Link بپیچید تا قابل کلیک شود
 const LinkWrapper = styled(Link)`
   text-decoration: none;
 `;

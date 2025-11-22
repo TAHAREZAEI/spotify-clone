@@ -49,9 +49,17 @@ const HomeContainer = styled.main`
     height: calc(100vh - 84px);
   }
 
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+
   @media (max-width: 640px) {
-    padding: 14px 12px;
+    padding: 12px 8px;
     height: calc(100vh - 74px);
+  }
+  
+  @media (max-width: 480px) {
+    padding: 8px 6px;
   }
 `;
 
