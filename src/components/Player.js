@@ -1,9 +1,11 @@
+// src/components/Player.js
+
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 
-// --- styled components شما بدون تغییر باقی می‌مانند ---
+// ... (کدهای styled-components شما بدون تغییر باقی می‌مانند)
 const PlayerContainer = styled.footer`
   position: fixed;
   bottom: 0;
@@ -22,6 +24,7 @@ const PlayerContainer = styled.footer`
   transform: translateY(${props => props.collapsed ? '100%' : '0'});
   transition: transform 0.28s ease-in-out;
   z-index: 2000;
+  cursor: pointer; /* <-- اضافه شد تا نشان دهد قابل کلیک است */
 
   .player-left, .player-right { 
     flex: 0 0 26%;
@@ -155,45 +158,36 @@ function Player() {
   const [{ item, playing, audioSrc, currentTime, duration, playerCollapsed }, dispatch] = useDataLayerValue();
   const audioRef = useRef(null);
 
-  // ===== شروع تغییرات اصلی =====
-  // این useEffect ترکیبی، هم منبع صوتی و هم وضعیت پخش را به صورت هماهنگ مدیریت می‌کند
+  // ... (بقیه useEffect ها بدون تغییر باقی می‌مانند)
   useEffect(() => {
     const audio = audioRef.current;
 
     if (audioSrc) {
-      // اگر منبع صوتی وجود دارد، آن را تنظیم و بارگذاری می‌کنیم
       audio.src = audioSrc;
       audio.load();
 
-      // بعد از اینکه فایل آماده پخش شد، اگر وضعیت پخش فعال بود، پخش را شروع کن
       const handleCanPlay = () => {
         if (playing) {
           audio.play().catch(err => console.error("Playback failed on canplay:", err));
         }
       };
 
-      // به رویداد 'canplay' گوش می‌دهیم تا مطمئن شویم فایل آماده است
       audio.addEventListener('canplay', handleCanPlay);
 
-      // همچنین اگر وضعیت پخش تغییر کرد، آن را کنترل کن
       if (playing) {
         audio.play().catch(err => console.error("Playback failed on play state change:", err));
       } else {
         audio.pause();
       }
       
-      // Cleanup: برای جلوگیری از حافظه leak، شنونده رو حذف می‌کنیم
       return () => {
         audio.removeEventListener('canplay', handleCanPlay);
       };
     } else {
-      // اگر منبع صوتی وجود ندارد، پخش را متوقف کرده و منبع را خالی می‌کنیم
       audio.pause();
       audio.src = '';
     }
-  }, [audioSrc, playing]); // این افکت به هر دو متغیر وابسته است
-  // ===== پایان تغییرات اصلی =====
-
+  }, [audioSrc, playing]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -221,19 +215,28 @@ function Player() {
     dispatch({ type: 'SET_CURRENT_TIME', currentTime: seekTime });
   };
 
+  // تابع جدید برای باز کردن نمای تمام‌صفحه
+  const handleOpenNowPlaying = () => {
+    dispatch({ type: 'TOGGLE_NOW_PLAYING_VIEW' });
+  };
+
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <PlayerContainer collapsed={playerCollapsed} role="region" aria-label="player">
-      {/* 
-        تغییر مهم: دیگر src را مستقیماً در JSX قرار نمی‌دهیم،
-        چون useEffect آن را برای ما مدیریت می‌کند.
-      */}
+    <PlayerContainer 
+      collapsed={playerCollapsed} 
+      role="region" 
+      aria-label="player"
+      onClick={handleOpenNowPlaying} // <-- 1. رویداد کلیک را اضافه کنید
+    >
       <audio ref={audioRef} />
       <CollapseButton
         aria-pressed={!!playerCollapsed}
         aria-label={playerCollapsed ? 'باز کردن پلیر' : 'بستن پلیر'}
-        onClick={() => dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' })}
+        onClick={(e) => {
+            e.stopPropagation(); // جلوگیری از باز شدن صفحه با کلیک روی این دکمه
+            dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' });
+        }}
       >
         {playerCollapsed ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
       </CollapseButton>
@@ -253,7 +256,7 @@ function Player() {
       </div>
 
       <div className="player-center">
-        <div className="player-controls" role="group" aria-label="player controls">
+        <div className="player-controls" role="group" aria-label="player controls" onClick={(e) => e.stopPropagation()}>
           <FiSkipBack size={18} />
           <div className="play-pause-button" onClick={handlePlayPause} role="button" aria-label="play pause">
             {playing ? <FiPause size={16} /> : <FiPlay size={16} />}
@@ -261,9 +264,9 @@ function Player() {
           <FiSkipForward size={18} />
         </div>
 
-        <PlayerProgress>
+        <PlayerProgress onClick={handleSeek}>
           <span>{formatTime(currentTime)}</span>
-          <div className="progress-bar" onClick={handleSeek}>
+          <div className="progress-bar">
             <div className="progress" style={{ width: `${progressPercentage}%` }} />
           </div>
           <span>{formatTime(duration)}</span>
