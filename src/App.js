@@ -11,6 +11,11 @@ import Search from './pages/Search';
 import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
 import PlaylistPage from './pages/PlaylistPage';
+import PopPage from './pages/PopPage';
+import HipHopPage from './pages/HipHopPage'; // <-- وارد کردن صفحات جدید
+import DanceElectronicPage from './pages/DanceElectronicPage';
+import PodcastsPage from './pages/PodcastsPage';
+import MoodPage from './pages/MoodPage';
 
 // کامپوننت‌های اصلی
 import Sidebar from './components/Sidebar';
@@ -21,9 +26,10 @@ import TopNavbar from './components/TopNavbar';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import MobileMenu from './components/MobileMenu';
-import NowPlayingView from './components/NowPlayingView'; // <-- 1. کامپوننت جدید را وارد کنید
+import NowPlayingView from './components/NowPlayingView';
 import { GlobalStyle } from './styles/GlobalStyle';
 
+// ... (کدهای styled-components شما بدون تغییر باقی می‌مانند)
 const AppContainer = styled.div`
   /* در حالت عادی (دسکتاپ و تبلت): */
   display: flex;
@@ -56,7 +62,7 @@ const PageWrapper = styled.div`
 `;
 
 function App() {
-  const [{ mobileMenuOpen, nowPlayingViewOpen }, dispatch] = useDataLayerValue(); // <-- 2. nowPlayingViewOpen را از state بگیرید
+  const [{ mobileMenuOpen, nowPlayingViewOpen }, dispatch] = useDataLayerValue();
 
   return (
     <>
@@ -73,6 +79,12 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/search" element={<Search />} />
+                  {/* مسیرهای جدید برای هر دسته‌بندی */}
+                  <Route path="/search/pop" element={<PopPage />} />
+                  <Route path="/search/hip-hop" element={<HipHopPage />} />
+                  <Route path="/search/dance-electronic" element={<DanceElectronicPage />} />
+                  <Route path="/search/podcasts" element={<PodcastsPage />} />
+                  <Route path="/search/mood" element={<MoodPage />} />
                   <Route path="/library" element={<Library />} />
                   <Route path="/liked-songs" element={<LikedSongs />} />
                   <Route path="/playlist/:id" element={<PlaylistPage />} />
@@ -94,7 +106,6 @@ function App() {
         </div>
       </Router>
 
-      {/* 3. کامپوننت تمام‌صفحه را اینجا اضافه کنید */}
       {nowPlayingViewOpen && <NowPlayingView />}
     </>
   );

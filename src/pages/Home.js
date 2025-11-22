@@ -17,18 +17,18 @@ import slider3 from '../assets/a.jpg';
 
 const madeForYouData = [
   { id: 1, name: 'My Custom Playlist 1', artist: 'Artist Name', albumArt: imagesJpg, audioUrl: '/audio/OVERTHINK%209_2.mp3' },
-  { id: 2, name: 'My Custom Playlist 2', artist: 'Another Artist', albumArt: downloadJpg },
-  { id: 3, name: 'My Custom Playlist 3', artist: 'Another Artist', albumArt: a},
-  { id: 4, name: 'My Custom Playlist 4', artist: 'Another Artist', albumArt: aa },
-  { id: 5, name: 'My Custom Playlist 5', artist: 'Another Artist', albumArt: qq },
+  { id: 2, name: 'My Custom Playlist 2', artist: 'Another Artist', albumArt: downloadJpg, audioUrl: '/audio/Hiphopologist - Darya .mp3' },
+  { id: 3, name: 'My Custom Playlist 3', artist: 'Another Artist', albumArt: a, audioUrl: '/audio/Hiphopologist - Ghors 2 (320).mp3'},
+  { id: 4, name: 'My Custom Playlist 4', artist: 'Another Artist', albumArt: aa, audioUrl: '/audio/Hiphopologist - Ghors (320).mp3'},
+  { id: 5, name: 'My Custom Playlist 5', artist: 'Another Artist', albumArt: qq, audioUrl: '/audio/Hiphopologist - Ex.mp3'},
 ];
 
 const popularArtistsData = [
-  { id: 6, name: 'My Custom Playlist 6', artist: 'Another Artist', albumArt: sa },
-  { id: 7, name: 'My Custom Playlist 7', artist: 'Another Artist', albumArt: ss },
-  { id: 8, name: 'My Custom Playlist 8', artist: 'Another Artist', albumArt: a  },
-  { id: 9, name: 'My Custom Playlist 9', artist: 'Another Artist', albumArt: downloadJpg },
-  { id: 10, name: 'My Custom Playlist 10', artist: 'Another Artist', albumArt: ss },
+  { id: 6, name: 'My Custom Playlist 6', artist: 'Another Artist', albumArt: sa, audioUrl: '/audio/Hiphopologist - Ghors 2 (320).mp3' },
+  { id: 7, name: 'My Custom Playlist 7', artist: 'Another Artist', albumArt: ss, audioUrl: '/audio/Hiphopologist - Ex.mp3' },
+  { id: 8, name: 'My Custom Playlist 8', artist: 'Another Artist', albumArt: a, audioUrl: '/audio/Hiphopologist - Ghors  (320).mp3'  },
+  { id: 9, name: 'My Custom Playlist 9', artist: 'Another Artist', albumArt: downloadJpg, audioUrl: '/audio/Hiphopologist - Darya .mp3'},
+  { id: 10, name: 'My Custom Playlist 10', artist: 'Another Artist', albumArt: ss, audioUrl: '/audio/Hiphopologist - Ex.mp3' },
 ];
 
 const slidesData = [
@@ -42,7 +42,6 @@ const HomeContainer = styled.main`
   background: linear-gradient(to bottom, #1e3264 0%, #121212 100%);
   padding: 24px;
   overflow-y: auto;
-  /* اگر پلیر پایین صفحه هست، ارتفاع را تنظیم کن (تا محتوا پشت پلیر نره) */
   height: calc(100vh - 90px);
 
   @media (max-width: 1024px) {
@@ -52,7 +51,7 @@ const HomeContainer = styled.main`
 
   @media (max-width: 640px) {
     padding: 14px 12px;
-    height: calc(100vh - 74px); /* ارتفاع پلیر موبایل */
+    height: calc(100vh - 74px);
   }
 `;
 
