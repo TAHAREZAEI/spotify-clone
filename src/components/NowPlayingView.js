@@ -14,16 +14,15 @@ const NowPlayingContainer = styled.div`
   background: linear-gradient(to bottom, #2d3436, #000000);
   z-index: 9999;
   display: flex;
-  flex-direction: column;
-  padding: 20px;
+  flex-direction: column; /* چیدمان عمودی */
   color: white;
 `;
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* دکمه بستن را به سمت راست می‌برد */
   align-items: center;
-  padding: 10px 0;
+  padding: 15px 20px;
 `;
 
 const CloseButton = styled.button`
@@ -34,34 +33,44 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const Content = styled.div`
-  flex-grow: 1;
+// این بخش محتوای اصلی (عکس و متن) را در خود جای می‌دهد
+const MainContent = styled.div`
+  flex-grow: 1; /* این بخش تمام فضای خالی بین هدر و کنترل‌ها را پر می‌کند */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* محتوا را در وسط این بخش عمودی قرار می‌دهد */
   align-items: center;
   text-align: center;
+  padding: 0 20px;
 `;
 
 const AlbumArt = styled.img`
-  width: 70%;
-  max-width: 400px;
+  width: 80%;
+  max-width: 350px;
   height: auto;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 const SongTitle = styled.h1`
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 800;
   margin: 0;
 `;
 
 const ArtistName = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   color: #b3b3b3;
   margin-top: 8px;
+`;
+
+// این بخش کنترل‌ها را در پایین صفحه نگه می‌دارد
+const ControlsContainer = styled.div`
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Controls = styled.div`
@@ -69,7 +78,6 @@ const Controls = styled.div`
   align-items: center;
   justify-content: center;
   gap: 32px;
-  margin-top: 40px;
 `;
 
 const ControlButton = styled.button`
@@ -104,35 +112,36 @@ function NowPlayingView() {
   };
 
   if (!item) {
-    return null; // اگر آهنگی در حال پخش نیست، چیزی نمایش نده
+    return null;
   }
 
   return (
     <NowPlayingContainer>
       <Header>
-        <div></div>
         <CloseButton onClick={handleClose}>
           <FiChevronDown size={32} />
         </CloseButton>
       </Header>
 
-      <Content>
+      <MainContent>
         <AlbumArt src={item.albumArt} alt={item.name} />
         <SongTitle>{item.name}</SongTitle>
         <ArtistName>{item.artist}</ArtistName>
-      </Content>
+      </MainContent>
 
-      <Controls>
-        <ControlButton>
-          <FiSkipBack size={24} />
-        </ControlButton>
-        <PlayPauseButton onClick={handlePlayPause}>
-          {playing ? <FiPause size={24} /> : <FiPlay size={24} />}
-        </PlayPauseButton>
-        <ControlButton>
-          <FiSkipForward size={24} />
-        </ControlButton>
-      </Controls>
+      <ControlsContainer>
+        <Controls>
+          <ControlButton>
+            <FiSkipBack size={24} />
+          </ControlButton>
+          <PlayPauseButton onClick={handlePlayPause}>
+            {playing ? <FiPause size={24} /> : <FiPlay size={24} />}
+          </PlayPauseButton>
+          <ControlButton>
+            <FiSkipForward size={24} />
+          </ControlButton>
+        </Controls>
+      </ControlsContainer>
     </NowPlayingContainer>
   );
 }
