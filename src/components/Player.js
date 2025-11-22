@@ -3,80 +3,91 @@ import styled from 'styled-components';
 import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 
-const PlayerContainer = styled.div`
+const PlayerContainer = styled.footer`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  /* ارتفاع کوچک‌تر */
-  height: 70px;
-  background-color: #181818;
+  height: 74px;
+  background-color: rgba(24,24,24,0.92);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  border-top: 1px solid #282828;
-  /* افکت شیشه‌ای */
-  background-color: rgba(24, 24, 24, 0.8);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  /* انیمیشن برای جمع شدن */
+  padding: 8px 20px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transform: translateY(${props => props.collapsed ? '100%' : '0'});
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.28s ease-in-out;
   z-index: 999;
-  
+
   .player-left, .player-right { 
-    flex: 0.3; 
-  }
-  
-  .player-center { 
-    flex: 0.4; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 4px; /* فاصله کمتر */
+    flex: 0 0 26%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
   }
 
-  .player-controls { 
-    display: flex; 
-    align-items: center; 
-    gap: 16px; 
-    color: #b3b3b3; 
-  }
-  
-  .player-controls .play-pause-button { 
-    background-color: white; 
-    color: black; 
-    width: 32px; /* کمی کوچک‌تر */
-    height: 32px; /* کمی کوچک‌تر */
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    cursor: pointer; 
+  .player-center {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 0 12px;
   }
 
-  .player-left .song-info { 
-    display: flex; 
-    align-items: center; 
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #b3b3b3;
   }
-  
-  .player-left .song-info img { 
-    height: 50px; /* کمی کوچک‌تر */
-    width: 50px; /* کمی کوچک‌تر */
-    margin-right: 12px; 
+
+  .play-pause-button {
+    background-color: #ffffff;
+    color: #000;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
   }
-  
-  .player-left .song-info .info-text h4 { 
-    font-size: 13px; /* کمی کوچک‌تر */
-    margin: 0; 
+
+  .song-info img {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    object-fit: cover;
   }
-  
-  .player-left .song-info .info-text p { 
-    font-size: 11px; /* کمی کوچک‌تر */
-    color: #b3b3b3; 
-    margin: 0; 
+
+  .song-info .info-text h4 { font-size: 14px; margin: 0; color: #fff; }
+  .song-info .info-text p { font-size: 12px; margin: 0; color: #b3b3b3; }
+
+  /* موبایل: ساده و کم‌جا */
+  @media (max-width: 640px) {
+    height: 64px;
+    padding: 6px 12px;
+
+    .player-left { flex: 0 0 40%; }
+    .player-right { flex: 0 0 20%; justify-content:flex-end; }
+    .player-center { display:flex; flex-direction:column; gap:6px; padding: 0 8px; }
+
+    .song-info img { width: 44px; height: 44px; }
+    .play-pause-button { width: 32px; height: 32px; }
+    .player-controls { gap: 10px; }
+    .player-left .song-info .info-text h4 { font-size: 13px; }
+    .player-left .song-info .info-text p { font-size: 11px; }
+  }
+
+  /* بسیار کوچک: اطلاعات کنار گذاشته شود */
+  @media (max-width: 420px) {
+    .player-left .song-info .info-text p { display: none; }
+    .song-info .info-text h4 { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   }
 `;
 
@@ -85,56 +96,54 @@ const PlayerProgress = styled.div`
   align-items: center;
   gap: 8px;
   width: 100%;
-  max-width: 600px;
+  max-width: 780px;
 
-  span { 
-    color: #b3b3b3; 
-    font-size: 11px; /* کمی کوچک‌تر */
-    min-width: 40px; 
-  }
-  
+  span { color: #b3b3b3; font-size: 12px; min-width: 40px; }
+
   .progress-bar {
-    flex-grow: 1; 
-    height: 3px; /* نازک‌تر */
-    background-color: #535353; 
-    border-radius: 2px; 
-    position: relative; 
+    flex-grow: 1;
+    height: 4px;
+    background-color: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    position: relative;
     cursor: pointer;
-    
-    .progress { 
-      position: absolute; 
-      left: 0; 
-      top: 0; 
-      height: 100%; 
-      background-color: #b3b3b3; 
-      border-radius: 2px; 
-      transition: width 0.1s linear; 
+
+    .progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background-color: #1db954;
+      border-radius: 99px;
+      transition: width 0.12s linear;
     }
+  }
+
+  @media (max-width: 640px) {
+    span { font-size: 11px; min-width: 36px; }
+    .progress-bar { height: 3px; }
   }
 `;
 
-// دکمه جمع و باز کردن پلیر
-const CollapseButton = styled.div`
+const CollapseButton = styled.button`
   position: absolute;
-  top: -15px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #282828;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
   color: #b3b3b3;
-  transition: all 0.2s ease;
+  transition: all .16s ease;
+  z-index: 1000;
 
-  &:hover {
-    background-color: #383838;
-    color: white;
-  }
+  &:hover { color: #fff; transform: translateX(-50%) scale(1.03); }
 `;
 
 const formatTime = (seconds) => {
@@ -151,7 +160,7 @@ function Player() {
   useEffect(() => {
     if (audioRef.current) {
       if (playing) {
-        audioRef.current.play().catch(error => console.error("Playback failed:", error));
+        audioRef.current.play().catch(err => console.error(err));
       } else {
         audioRef.current.pause();
       }
@@ -162,7 +171,7 @@ function Player() {
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
-      audio.src = audioSrc;
+      audio.src = audioSrc || '';
       audio.load();
     }
   }, [audioSrc]);
@@ -171,10 +180,10 @@ function Player() {
     const audio = audioRef.current;
     if (!audio) return;
     const setAudioData = () => {
-      dispatch({ type: 'SET_DURATION', duration: audio.duration });
-      dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime });
+      dispatch({ type: 'SET_DURATION', duration: audio.duration || 0 });
+      dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime || 0 });
     };
-    const setAudioTime = () => dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime });
+    const setAudioTime = () => dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime || 0 });
     audio.addEventListener('loadeddata', setAudioData);
     audio.addEventListener('timeupdate', setAudioTime);
     return () => {
@@ -183,59 +192,67 @@ function Player() {
     };
   }, [audioSrc, dispatch]);
 
-  const handlePlayPause = () => {
-    dispatch({ type: 'SET_PLAYING', playing: !playing });
-  };
-  
+  const handlePlayPause = () => dispatch({ type: 'SET_PLAYING', playing: !playing });
+
   const handleSeek = (e) => {
     const audio = audioRef.current;
     const seekTime = (e.target.value / 100) * duration;
-    audio.currentTime = seekTime;
+    if (audio) audio.currentTime = seekTime;
     dispatch({ type: 'SET_CURRENT_TIME', currentTime: seekTime });
   };
 
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <PlayerContainer collapsed={playerCollapsed}>
-      <audio ref={audioRef} src={audioSrc} />
-      <CollapseButton onClick={() => dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' })}>
+    <PlayerContainer collapsed={playerCollapsed} role="region" aria-label="player">
+      <audio ref={audioRef} src={audioSrc || ''} />
+      <CollapseButton
+        aria-pressed={!!playerCollapsed}
+        aria-label={playerCollapsed ? 'باز کردن پلیر' : 'بستن پلیر'}
+        onClick={() => dispatch({ type: 'TOGGLE_PLAYER_COLLAPSE' })}
+      >
         {playerCollapsed ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
       </CollapseButton>
+
       <div className="player-left">
         {item ? (
-          <div className="song-info">
+          <div className="song-info" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <img src={item.albumArt} alt={item.name} />
-            <div className="info-text">
-              <h4>{item.name}</h4>
-              <p>{item.artist}</p>
+            <div className="info-text" style={{ minWidth: 0 }}>
+              <h4 title={item.name}>{item.name}</h4>
+              <p title={item.artist}>{item.artist}</p>
             </div>
           </div>
         ) : (
-          <p>Select a song to play</p>
+          <div style={{ color: '#b3b3b3' }}>Select a song to play</div>
         )}
       </div>
+
       <div className="player-center">
-        <div className="player-controls">
+        <div className="player-controls" role="group" aria-label="player controls">
           <FiSkipBack size={18} />
-          <div className="play-pause-button" onClick={handlePlayPause}>
-            {playing ? <FiPause size={16} /> : <FiPlay size={16} style={{ marginLeft: '2px' }}/>}
+          <div className="play-pause-button" onClick={handlePlayPause} role="button" aria-label="play pause">
+            {playing ? <FiPause size={16} /> : <FiPlay size={16} />}
           </div>
           <FiSkipForward size={18} />
         </div>
+
         <PlayerProgress>
           <span>{formatTime(currentTime)}</span>
           <div className="progress-bar" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const percent = ((e.clientX - rect.left) / rect.width) * 100;
-              handleSeek({ target: { value: percent }});
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = ((e.clientX - rect.left) / rect.width) * 100;
+            handleSeek({ target: { value: percent }});
           }}>
-            <div className="progress" style={{ width: `${progressPercentage}%` }}></div>
+            <div className="progress" style={{ width: `${progressPercentage}%` }} />
           </div>
           <span>{formatTime(duration)}</span>
         </PlayerProgress>
       </div>
-      <div className="player-right"><span>🔊</span></div>
+
+      <div className="player-right">
+        <span style={{ color: '#b3b3b3' }}>🔊</span>
+      </div>
     </PlayerContainer>
   );
 }

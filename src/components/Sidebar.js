@@ -6,75 +6,98 @@ import { useDataLayerValue } from '../context/DataLayer';
 
 import spotifyLogo from '../assets/Spotify_Primary_Logo_RGB_Black.png';
 
-const SidebarContainer = styled.div`
-  flex: 0.2;
-  /* --- افکت شیشه‌ای --- */
+const SidebarContainer = styled.aside`
+  flex: 0 0 18%;
+  min-width: 200px;
+  max-width: 320px;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  /* --- پایان افکت --- */
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   color: #b3b3b3;
   height: 100vh;
-  padding: ${props => props.collapsed ? '12px 4px' : '24px 12px'};
+  padding: ${props => props.collapsed ? '12px 6px' : '24px 14px'};
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  transition: flex 0.3s ease, padding 0.3s ease;
+  gap: 10px;
+  transition: all 0.28s ease;
 
-  /* مخفی شدن در موبایل */
+  /* tablet */
+  @media (max-width: 1024px) {
+    flex: 0 0 20%;
+    min-width: 160px;
+  }
+
+  /* موبایل: مخفی (MobileMenu مسئول نمایش) */
   @media (max-width: 768px) {
     display: none;
   }
 
   .sidebar-logo {
-    height: 24px;
-    margin-bottom: 20px;
+    height: 28px;
+    margin-bottom: 18px;
     cursor: pointer;
     filter: invert(1) grayscale(100%);
+    object-fit: contain;
   }
 
   .sidebar-option {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     padding: 10px;
     font-size: 14px;
     font-weight: 600;
     color: #b3b3b3;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s;
+    border-radius: 6px;
+    transition: background-color .18s, color .18s, transform .18s;
     text-decoration: none;
 
+    svg { flex-shrink: 0; }
+
     &:hover {
-      color: white;
-      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.04);
+      transform: translateX(4px);
     }
   }
 
   .sidebar-option.active {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.08);
   }
 
   hr {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 10px 0;
+    border: none;
+    height: 1px;
+    background: rgba(255,255,255,0.04);
+    margin: 12px 0;
     width: 90%;
   }
+
+  /* اگر collapsed بود متن‌ها را مخفی کن (برای دسکتاپ کوچک) */
+  ${props => props.collapsed && `
+    .sidebar-option span { display: none; }
+    .sidebar-logo { display: none; }
+    padding: 12px 8px;
+    min-width: 72px;
+    max-width: 96px;
+  `}
 `;
 
-const ToggleButton = styled.div`
+const ToggleButton = styled.button`
   color: #b3b3b3;
   cursor: pointer;
   padding: 8px;
-  border-radius: 4px;
-  transition: color 0.2s;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-  &:hover {
-    color: white;
-  }
+  &:hover { color: #fff; transform: scale(1.03); }
 `;
 
 function Sidebar() {
@@ -82,34 +105,45 @@ function Sidebar() {
   const [{ sidebarCollapsed }, dispatch] = useDataLayerValue();
 
   return (
-    <SidebarContainer collapsed={sidebarCollapsed}>
+    <SidebarContainer collapsed={sidebarCollapsed} aria-label="sidebar">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {!sidebarCollapsed && <img className="sidebar-logo" src={spotifyLogo} alt="Spotify Logo" />}
-        <ToggleButton onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}>
-          {sidebarCollapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
+        <ToggleButton
+          aria-label={sidebarCollapsed ? 'expand sidebar' : 'collapse sidebar'}
+          onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+        >
+          {sidebarCollapsed ? <FiChevronRight size={18} /> : <FiChevronLeft size={18} />}
         </ToggleButton>
       </div>
-      
+
       <Link to="/" className={`sidebar-option ${location.pathname === '/' ? 'active' : ''}`}>
-        <FiHome size={24} />
+        <FiHome size={20} />
         {!sidebarCollapsed && <span>Home</span>}
       </Link>
-      
+
       <Link to="/search" className={`sidebar-option ${location.pathname === '/search' ? 'active' : ''}`}>
-        <FiSearch size={24} />
+        <FiSearch size={20} />
         {!sidebarCollapsed && <span>Search</span>}
       </Link>
-      
+
       <Link to="/library" className={`sidebar-option ${location.pathname === '/library' ? 'active' : ''}`}>
-        <FiBookOpen size={24} />
+        <FiBookOpen size={20} />
         {!sidebarCollapsed && <span>Your Library</span>}
       </Link>
-      
+
       <hr />
-      <div className="sidebar-option" onClick={() => dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' })}>
-        <FiPlusSquare size={24} />
+
+      <div
+        role="button"
+        tabIndex={0}
+        className="sidebar-option"
+        onClick={() => dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' })}
+        onKeyDown={(e) => (e.key === 'Enter' && dispatch({ type: 'OPEN_CREATE_PLAYLIST_MODAL' }))}
+      >
+        <FiPlusSquare size={20} />
         {!sidebarCollapsed && <span>Create Playlist</span>}
       </div>
+
       <Link to="/liked-songs" className={`sidebar-option ${location.pathname === '/liked-songs' ? 'active' : ''}`}>
         <span style={{ marginRight: '8px' }}>❤️</span>
         {!sidebarCollapsed && <span>Liked Songs</span>}
