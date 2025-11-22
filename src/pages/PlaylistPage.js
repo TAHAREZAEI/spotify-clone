@@ -1,7 +1,9 @@
+// src/pages/PlaylistPage.js
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import SongRow from '../components/SongRow'; // از کامپوننت SongRow برای نمایش آهنگ‌ها استفاده می‌کنیم
+import SongRow from '../components/SongRow';
 import { useDataLayerValue } from '../context/DataLayer';
 
 const PlaylistPageContainer = styled.div`
@@ -21,6 +23,7 @@ const PlaylistHeader = styled.div`
     width: 232px;
     height: 232px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border-radius: 8px;
   }
 
   div {
@@ -49,6 +52,14 @@ const PlaylistSongsContainer = styled.div`
   background-color: rgba(24,24,24,0.6);
   border-top: 1px solid rgba(255,255,255,0.1);
   padding-top: 20px;
+  border-radius: 8px 8px 0 0;
+`;
+
+const EmptyPlaylistMessage = styled.p`
+  color: #b3b3b3;
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
 `;
 
 const BackButton = styled(Link)`
@@ -59,20 +70,25 @@ const BackButton = styled(Link)`
   text-decoration: none;
   margin-bottom: 24px;
   font-weight: 600;
+  font-size: 16px;
   &:hover { color: #fff; }
 `;
 
 function PlaylistPage() {
   // 1. آیدی پلی‌لیست را از URL می‌گیریم
   const { id } = useParams();
+  // 2. لیست تمام پلی‌لیست‌ها را از DataLayer می‌گیریم
   const [{ playlists }] = useDataLayerValue();
 
-  // 2. پلی‌لیست مورد نظر را بر اساس آیدی پیدا می‌کنیم
+  // 3. پلی‌لیست مورد نظر را بر اساس آیدی پیدا می‌کنیم
   const playlist = playlists.find(p => p.id === parseInt(id));
 
   if (!playlist) {
     return <div style={{ color: 'white', padding: '20px' }}>پلی‌لیست پیدا نشد!</div>;
   }
+
+  // برای اطمینان، اگر آرایه آهنگ‌ها وجود نداشت، یک آرایه خالی در نظر می‌گیریم
+  const songsToRender = playlist.songs || [];
 
   return (
     <PlaylistPageContainer>
@@ -83,15 +99,21 @@ function PlaylistPage() {
         <div>
           <h1>Playlist</h1>
           <h2>{playlist.name}</h2>
-          <p>{playlist.songs.length} آهنگ</p>
+          <p>{songsToRender.length} آهنگ</p>
         </div>
       </PlaylistHeader>
 
       <PlaylistSongsContainer>
-        {/* 3. آهنگ‌های داخل پلی‌لیست را نمایش می‌دهیم */}
-        {playlist.songs.map(song => (
-          <SongRow key={song.id} track={song} />
-        ))}
+        {/* 4. اگر آهنگی وجود داشت، آن‌ها را نمایش بده، در غیر این صورت پیام خالی بودن را نشان بده */}
+        {songsToRender.length > 0 ? (
+          songsToRender.map(song => (
+            <SongRow key={song.id} track={song} />
+          ))
+        ) : (
+          <EmptyPlaylistMessage>
+            این پلی‌لیست خالی است. از صفحه‌ی اصلی آهنگ‌هایی به آن اضافه کنید.
+          </EmptyPlaylistMessage>
+        )}
       </PlaylistSongsContainer>
     </PlaylistPageContainer>
   );

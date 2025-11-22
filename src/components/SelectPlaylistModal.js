@@ -1,6 +1,9 @@
+// src/components/SelectPlaylistModal.js
+
 import React from 'react';
 import styled from 'styled-components';
 import { useDataLayerValue } from '../context/DataLayer';
+import { useNavigate } from 'react-router-dom'; // <-- 1. useNavigate را وارد کنید
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -57,18 +60,25 @@ const PlaylistItem = styled.div`
 
 function SelectPlaylistModal() {
   const [{ selectPlaylistModalOpen, playlists, songToAdd }, dispatch] = useDataLayerValue();
+  const navigate = useNavigate(); // <-- 2. هوک useNavigate را فراخوانی کنید
 
   const handleClose = () => {
     dispatch({ type: 'CLOSE_SELECT_PLAYLIST_MODAL' });
   };
 
   const handleSelectPlaylist = (playlist) => {
+    // اکشن اضافه کردن آهنگ به پلی‌لیست را اجرا می‌کنیم
     dispatch({
       type: 'ADD_SONG_TO_PLAYLIST',
       playlistId: playlist.id,
       song: songToAdd,
     });
+
+    // مودال را می‌بندیم
     handleClose();
+
+    // <-- 3. کاربر را به صفحه‌ی پلی‌لیست هدایت می‌کنیم
+    navigate(`/playlist/${playlist.id}`);
   };
 
   if (!selectPlaylistModalOpen) return null;
@@ -78,7 +88,10 @@ function SelectPlaylistModal() {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>Add to Playlist</ModalHeader>
         {playlists.map((playlist) => (
-          <PlaylistItem key={playlist.id} onClick={() => handleSelectPlaylist(playlist)}>
+          <PlaylistItem 
+            key={playlist.id} 
+            onClick={() => handleSelectPlaylist(playlist)}
+          >
             <img src={playlist.image} alt={playlist.name} />
             <p>{playlist.name}</p>
           </PlaylistItem>

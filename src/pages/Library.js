@@ -1,6 +1,9 @@
+// src/pages/Library.js
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FiPlus, FiSearch } from 'react-icons/fi';
+import { Link } from 'react-router-dom'; // <-- 1. Link را وارد کنید
 import LibraryItem from '../components/LibraryItem';
 import { useDataLayerValue } from '../context/DataLayer';
 
@@ -110,11 +113,16 @@ function Library() {
     switch (activeTab) {
       case 'Playlists':
         return playlists.map(item => (
-          <LibraryItem 
-            key={item.id} 
-            {...item} 
-            onDelete={() => handleDeletePlaylist(item.id)} 
-          />
+          // 2. آیتم پلی‌لیست را با Link بپیچید
+          <Link to={`/playlist/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
+            <LibraryItem 
+              {...item} 
+              onDelete={(e) => {
+                e.stopPropagation(); // جلوگیری از رفتن به صفحه پلی‌لیست هنگام کلیک روی حذف
+                handleDeletePlaylist(item.id);
+              }} 
+            />
+          </Link>
         ));
       case 'Podcasts':
         return podcastsData.map(item => <LibraryItem key={item.id} {...item} />);

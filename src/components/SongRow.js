@@ -1,9 +1,12 @@
+// src/components/SongRow.js
+
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { FiMoreVertical } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 import SongOptions from './SongOptions';
 
+// ... (کدهای styled-components شما بدون تغییر باقی می‌مانند) ...
 const SongRowContainer = styled.article`
   margin: 8px;
   padding: 12px;
@@ -44,12 +47,11 @@ const SongRowContainer = styled.article`
     align-items:center;
     justify-content:center;
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    opacity: 1;
+    opacity: 0; /* به طور پیش‌فرض مخفی */
     transform: translateY(10px);
     transition: all .26s ease;
   }
 
-  /* موبایل: عرض کامل و لایه افقی */
   @media (max-width: 640px) {
     width: 100%;
     flex-direction: row;
@@ -123,6 +125,34 @@ function SongRow({ track }) {
     setShowOptions(false);
   };
 
+  // ===== توابع جدید برای گزینه‌های منو =====
+  const handleGoToArtist = (e) => {
+    e.stopPropagation();
+    alert(`Going to artist: ${track.artist}`);
+    setShowOptions(false);
+  };
+
+  const handleGoToAlbum = (e) => {
+    e.stopPropagation();
+    alert(`Going to album: ${track.album}`);
+    setShowOptions(false);
+  };
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    if (navigator.share) {
+      navigator.share({
+        title: track.name,
+        text: `Check out ${track.name} by ${track.artist}`,
+        url: window.location.href
+      });
+    } else {
+      alert(`Share link for ${track.name}`);
+    }
+    setShowOptions(false);
+  };
+  // ===== پایان توابع جدید =====
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
@@ -139,7 +169,14 @@ function SongRow({ track }) {
         <OptionsButton onClick={(e) => { e.stopPropagation(); setShowOptions(!showOptions); }}>
           <FiMoreVertical />
         </OptionsButton>
-        {showOptions && <SongOptions onAddToPlaylist={handleAddToPlaylist} />}
+        {showOptions && (
+          <SongOptions 
+            onAddToPlaylist={handleAddToPlaylist}
+            onGoToArtist={handleGoToArtist}
+            onGoToAlbum={handleGoToAlbum}
+            onShare={handleShare}
+          />
+        )}
       </div>
 
       <LikeButton onClick={handleLike} aria-pressed={isLiked}>

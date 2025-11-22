@@ -1,10 +1,19 @@
+// src/App.js
+
 import React from 'react';
 import styled from 'styled-components';
-import Sidebar from './components/Sidebar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useDataLayerValue } from './context/DataLayer';
+
+// کامپوننت‌های صفحات
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
+import PlaylistPage from './pages/PlaylistPage'; // <-- 1. کامپوننت جدید را وارد کنید
+
+// کامپوننت‌های اصلی
+import Sidebar from './components/Sidebar';
 import Player from './components/Player';
 import CreatePlaylistModal from './components/CreatePlaylistModal';
 import SelectPlaylistModal from './components/SelectPlaylistModal';
@@ -13,9 +22,6 @@ import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import MobileMenu from './components/MobileMenu';
 import { GlobalStyle } from './styles/GlobalStyle';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// این خط بسیار مهم است
-import { useDataLayerValue } from './context/DataLayer'; 
 
 const AppContainer = styled.div`
   /* در حالت عادی (دسکتاپ و تبلت): */
@@ -49,18 +55,15 @@ const PageWrapper = styled.div`
 `;
 
 function App() {
-  // از useDataLayerValue برای گرفتن dispatch و mobileMenuOpen استفاده می‌کنیم
   const [{ mobileMenuOpen }, dispatch] = useDataLayerValue();
 
   return (
     <>
       <GlobalStyle />
       <Router>
-        {/* نوار بالایی و پلیر همیشه در بیرون قرار دارند */}
         <TopNavbar />
         <Player />
         
-        {/* ساختار اصلی برای دسکتاپ و تبلت */}
         <AppContainer>
           <Sidebar />
           <MainContentWrapper>
@@ -71,6 +74,8 @@ function App() {
                   <Route path="/search" element={<Search />} />
                   <Route path="/library" element={<Library />} />
                   <Route path="/liked-songs" element={<LikedSongs />} />
+                  {/* 2. مسیر داینامیک جدید برای صفحه پلی‌لیست */}
+                  <Route path="/playlist/:id" element={<PlaylistPage />} />
                 </Routes>
               </PageWrapper>
               <Footer />
@@ -78,7 +83,6 @@ function App() {
           </MainContentWrapper>
         </AppContainer>
         
-        {/* منوی موبایل و مودال‌ها فقط در موبایل نمایش داده می‌شوند */}
         <div css="@media (max-width: 768px) { display: block; }">
           <BottomNav />
           <MobileMenu 
