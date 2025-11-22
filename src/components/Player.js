@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { FiSkipBack, FiSkipForward, FiPlay, FiPause, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useDataLayerValue } from '../context/DataLayer';
 
+// --- styled components شما بدون تغییر باقی می‌مانند ---
 const PlayerContainer = styled.footer`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 74px;
+  width: 100%;
   background-color: rgba(24,24,24,0.92);
   display: flex;
   justify-content: space-between;
@@ -19,7 +21,7 @@ const PlayerContainer = styled.footer`
   -webkit-backdrop-filter: blur(12px);
   transform: translateY(${props => props.collapsed ? '100%' : '0'});
   transition: transform 0.28s ease-in-out;
-  z-index: 999;
+  z-index: 2000;
 
   .player-left, .player-right { 
     flex: 0 0 26%;
@@ -68,15 +70,12 @@ const PlayerContainer = styled.footer`
   .song-info .info-text h4 { font-size: 14px; margin: 0; color: #fff; }
   .song-info .info-text p { font-size: 12px; margin: 0; color: #b3b3b3; }
 
-  /* موبایل: ساده و کم‌جا */
   @media (max-width: 640px) {
     height: 64px;
     padding: 6px 12px;
-
     .player-left { flex: 0 0 40%; }
     .player-right { flex: 0 0 20%; justify-content:flex-end; }
     .player-center { display:flex; flex-direction:column; gap:6px; padding: 0 8px; }
-
     .song-info img { width: 44px; height: 44px; }
     .play-pause-button { width: 32px; height: 32px; }
     .player-controls { gap: 10px; }
@@ -84,7 +83,6 @@ const PlayerContainer = styled.footer`
     .player-left .song-info .info-text p { font-size: 11px; }
   }
 
-  /* بسیار کوچک: اطلاعات کنار گذاشته شود */
   @media (max-width: 420px) {
     .player-left .song-info .info-text p { display: none; }
     .song-info .info-text h4 { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -157,31 +155,51 @@ function Player() {
   const [{ item, playing, audioSrc, currentTime, duration, playerCollapsed }, dispatch] = useDataLayerValue();
   const audioRef = useRef(null);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      if (playing) {
-        audioRef.current.play().catch(err => console.error(err));
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [playing]);
-
+  // ===== شروع تغییرات اصلی =====
+  // این useEffect ترکیبی، هم منبع صوتی و هم وضعیت پخش را به صورت هماهنگ مدیریت می‌کند
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.src = audioSrc || '';
+
+    if (audioSrc) {
+      // اگر منبع صوتی وجود دارد، آن را تنظیم و بارگذاری می‌کنیم
+      audio.src = audioSrc;
       audio.load();
+
+      // بعد از اینکه فایل آماده پخش شد، اگر وضعیت پخش فعال بود، پخش را شروع کن
+      const handleCanPlay = () => {
+        if (playing) {
+          audio.play().catch(err => console.error("Playback failed on canplay:", err));
+        }
+      };
+
+      // به رویداد 'canplay' گوش می‌دهیم تا مطمئن شویم فایل آماده است
+      audio.addEventListener('canplay', handleCanPlay);
+
+      // همچنین اگر وضعیت پخش تغییر کرد، آن را کنترل کن
+      if (playing) {
+        audio.play().catch(err => console.error("Playback failed on play state change:", err));
+      } else {
+        audio.pause();
+      }
+      
+      // Cleanup: برای جلوگیری از حافظه leak، شنونده رو حذف می‌کنیم
+      return () => {
+        audio.removeEventListener('canplay', handleCanPlay);
+      };
+    } else {
+      // اگر منبع صوتی وجود ندارد، پخش را متوقف کرده و منبع را خالی می‌کنیم
+      audio.pause();
+      audio.src = '';
     }
-  }, [audioSrc]);
+  }, [audioSrc, playing]); // این افکت به هر دو متغیر وابسته است
+  // ===== پایان تغییرات اصلی =====
+
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     const setAudioData = () => {
       dispatch({ type: 'SET_DURATION', duration: audio.duration || 0 });
-      dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime || 0 });
     };
     const setAudioTime = () => dispatch({ type: 'SET_CURRENT_TIME', currentTime: audio.currentTime || 0 });
     audio.addEventListener('loadeddata', setAudioData);
@@ -196,7 +214,9 @@ function Player() {
 
   const handleSeek = (e) => {
     const audio = audioRef.current;
-    const seekTime = (e.target.value / 100) * duration;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    const seekTime = percent * duration;
     if (audio) audio.currentTime = seekTime;
     dispatch({ type: 'SET_CURRENT_TIME', currentTime: seekTime });
   };
@@ -205,7 +225,11 @@ function Player() {
 
   return (
     <PlayerContainer collapsed={playerCollapsed} role="region" aria-label="player">
-      <audio ref={audioRef} src={audioSrc || ''} />
+      {/* 
+        تغییر مهم: دیگر src را مستقیماً در JSX قرار نمی‌دهیم،
+        چون useEffect آن را برای ما مدیریت می‌کند.
+      */}
+      <audio ref={audioRef} />
       <CollapseButton
         aria-pressed={!!playerCollapsed}
         aria-label={playerCollapsed ? 'باز کردن پلیر' : 'بستن پلیر'}
@@ -239,11 +263,7 @@ function Player() {
 
         <PlayerProgress>
           <span>{formatTime(currentTime)}</span>
-          <div className="progress-bar" onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const percent = ((e.clientX - rect.left) / rect.width) * 100;
-            handleSeek({ target: { value: percent }});
-          }}>
+          <div className="progress-bar" onClick={handleSeek}>
             <div className="progress" style={{ width: `${progressPercentage}%` }} />
           </div>
           <span>{formatTime(duration)}</span>

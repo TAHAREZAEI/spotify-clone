@@ -2,25 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CategoryCardContainer = styled.div`
-  min-width: 180px;
+    flex: 1 1 180px; /* اجازه میده کارت‌ها جمع و جور بشن */
+  max-width: 250px;
   min-height: 120px;
   padding: 16px;
-  /* --- افکت شیشه‌ای --- */
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255,255,255,0.1);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  /* --- پایان افکت --- */
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    transform: scale(1.05);
-  }
+  &:hover { transform: scale(1.05); }
 
   img {
     position: absolute;
@@ -30,6 +24,13 @@ const CategoryCardContainer = styled.div`
     height: 100px;
     opacity: 0.8;
     transform: rotate(25deg);
+
+    @media (max-width: 480px) {
+      width: 70px;
+      height: 70px;
+      bottom: -10px;
+      right: -10px;
+    }
   }
 
   h4 {
@@ -39,6 +40,10 @@ const CategoryCardContainer = styled.div`
     margin: 0;
     position: relative;
     z-index: 1;
+
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
   }
 `;
 
